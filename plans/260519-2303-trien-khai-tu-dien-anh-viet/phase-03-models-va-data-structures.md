@@ -1,7 +1,7 @@
 ---
 phase: 3
 title: "Models va data structures"
-status: pending
+status: completed
 priority: P1
 effort: ""
 dependencies: [2]
@@ -27,8 +27,8 @@ Tao model `Word` va cac cau truc du lieu tu cai dat: DynamicArray, Trie, History
 - Create/Modify: `models/word.py`
 - Create/Modify: `structures/dynamic_array.py`
 - Create/Modify: `structures/trie.py`
-- Create/Modify: `structures/history_list.py`
-- Create/Modify: `structures/favorite_list.py`
+- Create/Modify: `models/history_list.py`
+- Create/Modify: `models/favorite_list.py`
 
 ## Implementation Steps
 
@@ -41,11 +41,11 @@ Tao model `Word` va cac cau truc du lieu tu cai dat: DynamicArray, Trie, History
 
 ## Success Criteria
 
-- [ ] `Word.to_file_line()` dung `FIELD_SEPARATOR` va `LIST_SEPARATOR`.
-- [ ] `Word.from_file_line()` bo qua dong sai format bang cach tra ve `None` hoac fail an toan theo convention chon.
-- [ ] `DynamicArray` tu quan ly `size` va `capacity`.
-- [ ] `Trie.search()` tra ve Word neu co, `None` neu khong co.
-- [ ] History va Favorite khong crash khi rong.
+- [x] `Word.to_file_line()` dung `FIELD_SEPARATOR` va `LIST_SEPARATOR`.
+- [x] `Word.from_file_line()` bo qua dong sai format bang cach tra ve `None` hoac fail an toan theo convention chon.
+- [x] `DynamicArray` tu quan ly `size` va `capacity`.
+- [x] `Trie.search()` tra ve Word neu co, `None` neu khong co.
+- [x] History va Favorite khong crash khi rong.
 
 ## Risk Assessment
 

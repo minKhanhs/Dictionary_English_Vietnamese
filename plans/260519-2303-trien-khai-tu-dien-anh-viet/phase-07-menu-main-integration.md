@@ -1,7 +1,7 @@
 ---
 phase: 7
 title: "Menu main integration"
-status: pending
+status: completed
 priority: P2
 effort: ""
 dependencies: [6]
@@ -39,10 +39,10 @@ Ket noi service vao menu console va entrypoint `main.py`. Phase nay bien cac mod
 
 ## Success Criteria
 
-- [ ] `python main.py` chay duoc menu application.
-- [ ] `python main.py` co the chon run tests.
-- [ ] Nhap chu o menu khong crash.
-- [ ] Menu khong import FileService truc tiep.
+- [x] `python3 main.py` chay duoc menu application.
+- [x] `python3 main.py` co the chon run tests.
+- [x] Nhap chu o menu khong crash.
+- [x] Menu khong import FileService truc tiep.
 
 ## Risk Assessment
 

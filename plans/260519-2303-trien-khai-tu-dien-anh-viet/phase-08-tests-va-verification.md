@@ -1,7 +1,7 @@
 ---
 phase: 8
 title: "Tests va verification"
-status: pending
+status: completed
 priority: P1
 effort: ""
 dependencies: [1, 2, 3, 4, 5, 6, 7]
@@ -47,11 +47,11 @@ Tao test runner tu viet va test files cho cac module bat buoc. Phase nay xac nha
 
 ## Success Criteria
 
-- [ ] Tat ca test trong muc 17 cua `SKILL.MD` pass.
-- [ ] Test runner in total/passed/failed ro rang.
-- [ ] Chay test khong can cai thu vien ngoai.
-- [ ] Test FileService khong pha du lieu nguoi dung.
-- [ ] Manual smoke test menu khong crash.
+- [x] Tat ca test trong muc 17 cua `SKILL.MD` pass.
+- [x] Test runner in total/passed/failed ro rang.
+- [x] Chay test khong can cai thu vien ngoai.
+- [x] Test FileService khong pha du lieu nguoi dung.
+- [x] Manual smoke test menu khong crash.
 
 ## Risk Assessment
 

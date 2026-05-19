@@ -1,7 +1,7 @@
 ---
 phase: 5
 title: "File persistence"
-status: pending
+status: completed
 priority: P1
 effort: ""
 dependencies: [2, 3]
@@ -39,10 +39,10 @@ Xay dung `FileService` doc/ghi dictionary, history, favorites bang file text. Mo
 
 ## Success Criteria
 
-- [ ] Chay khi data files chua ton tai van tao/tra ve du lieu rong.
-- [ ] Dong dictionary sai format bi bo qua, chuong trinh tiep tuc.
-- [ ] Khong co business rule nhu "favorite phai ton tai trong dictionary" trong FileService.
-- [ ] Save/load round-trip giu duoc english, vietnamese, example, synonyms.
+- [x] Chay khi data files chua ton tai van tao/tra ve du lieu rong.
+- [x] Dong dictionary sai format bi bo qua, chuong trinh tiep tuc.
+- [x] Khong co business rule nhu "favorite phai ton tai trong dictionary" trong FileService.
+- [x] Save/load round-trip giu duoc english, vietnamese, example, synonyms.
 
 ## Risk Assessment
 

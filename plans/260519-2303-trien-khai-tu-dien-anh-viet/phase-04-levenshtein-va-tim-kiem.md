@@ -1,7 +1,7 @@
 ---
 phase: 4
 title: "Levenshtein va tim kiem"
-status: pending
+status: completed
 priority: P2
 effort: ""
 dependencies: [2, 3]
@@ -38,10 +38,10 @@ Tu cai dat Levenshtein Distance va quy tac threshold de phuc vu tim kiem gan dun
 
 ## Success Criteria
 
-- [ ] `distance("hello", "hello") == 0`.
-- [ ] Mot thao tac them/xoa/thay ky tu tra ve `1`.
-- [ ] `distance("kitten", "sitting") == 3`.
-- [ ] Threshold tra ve dung theo do dai tu.
+- [x] `distance("hello", "hello") == 0`.
+- [x] Mot thao tac them/xoa/thay ky tu tra ve `1`.
+- [x] `distance("kitten", "sitting") == 3`.
+- [x] Threshold tra ve dung theo do dai tu.
 
 ## Risk Assessment
 

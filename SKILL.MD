@@ -38,14 +38,14 @@ DictionaryProject/
 │
 ├── models/
 │   ├── __init__.py
-│   └── word.py
+│   ├── word.py
+│   ├── history_list.py
+│   └── favorite_list.py
 │
 ├── structures/
 │   ├── __init__.py
 │   ├── trie.py
-│   ├── dynamic_array.py
-│   ├── history_list.py
-│   └── favorite_list.py
+│   └── dynamic_array.py
 │
 ├── algorithms/
 │   ├── __init__.py
@@ -199,7 +199,7 @@ Phương thức:
 Không dùng list như cấu trúc chính một cách trực tiếp cho nghiệp vụ từ điển, mà dùng DynamicArray để thể hiện tự cài đặt cấu trúc dữ liệu.
 Có thể dùng list nội bộ để mô phỏng mảng động, nhưng phải tự quản lý size, capacity và resize.
 
-5. structures/history_list.py
+5. models/history_list.py
 Quản lý lịch sử tra cứu gần đây.
 
 Class HistoryList:
@@ -219,7 +219,7 @@ Yêu cầu:
 - Nếu đầy thì xóa phần tử cũ nhất.
 - Không crash khi danh sách rỗng.
 
-6. structures/favorite_list.py
+6. models/favorite_list.py
 Quản lý danh sách từ yêu thích.
 
 Class FavoriteList:

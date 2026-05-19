@@ -1,7 +1,7 @@
 ---
 phase: 6
 title: "DictionaryService CRUD"
-status: pending
+status: completed
 priority: P1
 effort: ""
 dependencies: [3, 4, 5]
@@ -44,13 +44,13 @@ Implement lop nghiep vu chinh cho CRUD tu dien, search, history, favorites va di
 
 ## Success Criteria
 
-- [ ] Them tu moi thanh cong va khong cho them trung.
-- [ ] Khong them tu rong hoac tu co so.
-- [ ] Them synonym thanh cong va khong cho synonym trung/vuot gioi han.
-- [ ] Exact search thanh cong them vao history.
-- [ ] Exact search that bai co goi y gan dung duoc sap xep theo distance.
-- [ ] Favorite chi nhan tu da ton tai.
-- [ ] Save/load giu dung trang thai dictionary, history, favorites.
+- [x] Them tu moi thanh cong va khong cho them trung.
+- [x] Khong them tu rong hoac tu co so.
+- [x] Them synonym thanh cong va khong cho synonym trung/vuot gioi han.
+- [x] Exact search thanh cong them vao history.
+- [x] Exact search that bai co goi y gan dung duoc sap xep theo distance.
+- [x] Favorite chi nhan tu da ton tai.
+- [x] Save/load giu dung trang thai dictionary, history, favorites.
 
 ## Risk Assessment
 

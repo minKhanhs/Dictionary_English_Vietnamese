@@ -1,7 +1,7 @@
 ---
 title: "Trien khai tu dien Anh Viet theo SKILL.MD"
 description: "Implementation roadmap to rebuild the English-Vietnamese console dictionary according to SKILL.MD."
-status: pending
+status: completed
 priority: P2
 branch: "pham-dac-luc"
 tags: []
@@ -24,14 +24,14 @@ Pham vi chi gom chuong trinh console khong dung thu vien ngoai. Khong dung datab
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | [Audit va chuan hoa cau truc](./phase-01-audit-va-chuan-hoa-cau-truc.md) | Pending |
-| 2 | [Config utilities validation](./phase-02-config-utilities-validation.md) | Pending |
-| 3 | [Models va data structures](./phase-03-models-va-data-structures.md) | Pending |
-| 4 | [Levenshtein va tim kiem](./phase-04-levenshtein-va-tim-kiem.md) | Pending |
-| 5 | [File persistence](./phase-05-file-persistence.md) | Pending |
-| 6 | [DictionaryService CRUD](./phase-06-dictionaryservice-crud.md) | Pending |
-| 7 | [Menu main integration](./phase-07-menu-main-integration.md) | Pending |
-| 8 | [Tests va verification](./phase-08-tests-va-verification.md) | Pending |
+| 1 | [Audit va chuan hoa cau truc](./phase-01-audit-va-chuan-hoa-cau-truc.md) | Completed |
+| 2 | [Config utilities validation](./phase-02-config-utilities-validation.md) | Completed |
+| 3 | [Models va data structures](./phase-03-models-va-data-structures.md) | Completed |
+| 4 | [Levenshtein va tim kiem](./phase-04-levenshtein-va-tim-kiem.md) | Completed |
+| 5 | [File persistence](./phase-05-file-persistence.md) | Completed |
+| 6 | [DictionaryService CRUD](./phase-06-dictionaryservice-crud.md) | Completed |
+| 7 | [Menu main integration](./phase-07-menu-main-integration.md) | Completed |
+| 8 | [Tests va verification](./phase-08-tests-va-verification.md) | Completed |
 
 ## Dependencies
 
@@ -47,8 +47,8 @@ config/app_config.py
 models/word.py
 structures/trie.py
 structures/dynamic_array.py
-structures/history_list.py
-structures/favorite_list.py
+models/history_list.py
+models/favorite_list.py
 algorithms/levenshtein.py
 services/dictionary_service.py
 services/file_service.py
@@ -65,12 +65,12 @@ data/favorites.txt
 
 ## Success Criteria
 
-- [ ] Chay `python main.py` hien menu chon application hoac unit tests.
-- [ ] Application cho phep them tu, them synonym, tra cuu chinh xac, goi y gan dung, xem history, them/xoa/xem favorites, hien thi tat ca tu, luu du lieu.
-- [ ] Du lieu duoc doc/ghi bang file text trong `data/`.
-- [ ] Business logic nam trong `DictionaryService`; UI khong doc/ghi file truc tiep.
-- [ ] Input sai kieu, rong, hoac file sai format khong lam chuong trinh crash.
-- [ ] Tat ca test case trong `SKILL.MD` duoc bao phu bang test runner tu viet.
+- [x] Chay `python3 main.py` hien menu chon application hoac unit tests.
+- [x] Application cho phep them tu, them synonym, tra cuu chinh xac, goi y gan dung, xem history, them/xoa/xem favorites, hien thi tat ca tu, luu du lieu.
+- [x] Du lieu duoc doc/ghi bang file text trong `data/`.
+- [x] Business logic nam trong `DictionaryService`; UI khong doc/ghi file truc tiep.
+- [x] Input sai kieu, rong, hoac file sai format khong lam chuong trinh crash.
+- [x] Tat ca test case trong `SKILL.MD` duoc bao phu bang test runner tu viet.
 
 ## Handoff
 

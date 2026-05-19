@@ -1,7 +1,7 @@
 ---
 phase: 2
 title: "Config utilities validation"
-status: pending
+status: completed
 priority: P1
 effort: ""
 dependencies: [1]
@@ -40,10 +40,10 @@ Xay dung nen config, xu ly chuoi, va validation de cac phase sau khong hard-code
 
 ## Success Criteria
 
-- [ ] Khong co path, separator, gioi han max/min hard-code ngoai `AppConfig`.
-- [ ] Validator tra ve `False` thay vi raise exception voi input sai.
-- [ ] Normalize word cho ket qua lower-case, trim, va bo khoang trang du.
-- [ ] Menu choice validate duoc khoang `0..10` theo menu trong doc.
+- [x] Khong co path, separator, gioi han max/min hard-code ngoai `AppConfig`.
+- [x] Validator tra ve `False` thay vi raise exception voi input sai.
+- [x] Normalize word cho ket qua lower-case, trim, va bo khoang trang du.
+- [x] Menu choice validate duoc khoang `0..10` theo menu trong doc.
 
 ## Risk Assessment
 

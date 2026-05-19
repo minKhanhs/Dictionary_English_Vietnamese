@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "Audit va chuan hoa cau truc"
-status: pending
+status: completed
 priority: P1
 effort: ""
 dependencies: []
@@ -25,7 +25,7 @@ Ung dung se dung package phan tang: `ui` -> `services` -> `models/structures/alg
 ## Related Code Files
 
 - Create: `data/.gitkeep` neu can giu thu muc rong.
-- Create: `config/app_config.py`, `models/word.py`, `structures/dynamic_array.py`, `structures/history_list.py`, `structures/favorite_list.py`, `validation/validator.py`, cac file test con thieu.
+- Create: `config/app_config.py`, `models/word.py`, `models/history_list.py`, `models/favorite_list.py`, `structures/dynamic_array.py`, `validation/validator.py`, cac file test con thieu.
 - Modify/Rename: cac file CamelCase hien co sang ten theo doc neu can.
 - Preserve/Migrate: `dictionary.txt`, `history.txt`, `favourite.txt` sang `data/dictionary.txt`, `data/history.txt`, `data/favorites.txt`.
 
@@ -40,10 +40,10 @@ Ung dung se dung package phan tang: `ui` -> `services` -> `models/structures/alg
 
 ## Success Criteria
 
-- [ ] Cau truc thu muc khop voi `SKILL.MD`.
-- [ ] Import module Python khong bi loi do doi ten file.
-- [ ] Data files nam trong `data/` va co the rong nhung ton tai.
-- [ ] Khong mat noi dung dictionary/history/favorites cu neu file cu da co du lieu.
+- [x] Cau truc thu muc khop voi `SKILL.MD`.
+- [x] Import module Python khong bi loi do doi ten file.
+- [x] Data files nam trong `data/` va co the rong nhung ton tai.
+- [x] Khong mat noi dung dictionary/history/favorites cu neu file cu da co du lieu.
 
 ## Risk Assessment
 
