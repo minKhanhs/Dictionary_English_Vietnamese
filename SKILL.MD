@@ -24,7 +24,7 @@ Yêu cầu chức năng:
 10. Chương trình đọc và ghi dữ liệu bằng file text.
 11. Người dùng thao tác bằng menu console cho đến khi chọn thoát.
 12. Chương trình cần có validation đầu vào và lập trình phòng ngừa.
-13. Chương trình cần có unit test tự viết, không dùng pytest hoặc unittest nếu không cần thiết. Ưu tiên tự viết TestRunner đơn giản.
+13. Chương trình cần có unit test bằng thư viện chuẩn unittest của Python.
 
 Cấu trúc thư mục bắt buộc:
 
@@ -70,15 +70,17 @@ DictionaryProject/
 │
 ├── tests/
 │   ├── __init__.py
-│   ├── test_runner.py
 │   ├── all_tests.py
-│   ├── word_test.py
-│   ├── trie_test.py
-│   ├── levenshtein_test.py
-│   ├── validator_test.py
-│   ├── dynamic_array_test.py
-│   ├── history_list_test.py
-│   └── favorite_list_test.py
+│   ├── test_word.py
+│   ├── test_trie.py
+│   ├── test_levenshtein.py
+│   ├── test_fuzzy_search.py
+│   ├── test_validator.py
+│   ├── test_dynamic_array.py
+│   ├── test_history_list.py
+│   ├── test_favorite_list.py
+│   ├── test_file_service.py
+│   └── test_dictionary_service.py
 │
 └── data/
     ├── dictionary.txt
@@ -407,60 +409,38 @@ Nếu chọn 2:
 Nếu nhập sai:
 - Mặc định chạy application.
 
-14. tests/test_runner.py
-Tự viết TestRunner đơn giản.
-
-Class TestRunner:
-- total_tests
-- passed_tests
-- failed_tests
-- assert_true(condition, test_name)
-- assert_false(condition, test_name)
-- assert_equal(expected, actual, test_name)
-- print_summary()
-
-Không dùng pytest.
-Không dùng unittest nếu không cần thiết.
-
-15. tests
+14. tests
 Viết test cho các module:
 - WordTest
 - TrieTest
 - LevenshteinTest
+- FuzzySearchTest
 - ValidatorTest
 - DynamicArrayTest
 - HistoryListTest
 - FavoriteListTest
+- FileServiceTest
+- DictionaryServiceTest
 
-Mỗi file test có class tương ứng và hàm static run(runner).
+Mỗi file test dùng unittest.TestCase, method bắt đầu bằng test_, và có thể chạy bằng unittest discovery.
 
 Ví dụ:
-class LevenshteinTest:
-    @staticmethod
-    def run(runner):
-        runner.assert_equal(0, Levenshtein.distance("hello", "hello"), "same word distance should be 0")
-        runner.assert_equal(1, Levenshtein.distance("helo", "hello"), "one insertion")
-        runner.assert_equal(1, Levenshtein.distance("cat", "cut"), "one substitution")
-        runner.assert_equal(3, Levenshtein.distance("kitten", "sitting"), "kitten sitting should be 3")
+class LevenshteinTest(unittest.TestCase):
+    def test_distance_for_same_word_is_zero(self):
+        self.assertEqual(0, Levenshtein("hello").distance("hello"))
 
-16. tests/all_tests.py
+15. tests/all_tests.py
 Chạy toàn bộ test.
 
 Class AllTests:
 - run_all()
 
 Trong run_all:
-- Tạo TestRunner.
-- Gọi WordTest.run(runner)
-- Gọi TrieTest.run(runner)
-- Gọi LevenshteinTest.run(runner)
-- Gọi ValidatorTest.run(runner)
-- Gọi DynamicArrayTest.run(runner)
-- Gọi HistoryListTest.run(runner)
-- Gọi FavoriteListTest.run(runner)
-- In summary.
+- Dùng unittest discovery với pattern test_*.py.
+- Chạy suite bằng unittest.TextTestRunner.
+- Trả về result.wasSuccessful().
 
-17. Test case cần đảm bảo:
+16. Test case cần đảm bảo:
 - Thêm từ mới thành công.
 - Không thêm từ trùng.
 - Không thêm từ rỗng.

@@ -1,4 +1,4 @@
-"""Central response metadata for the local test suites."""
+"""Central response metadata for the local unittest suites."""
 
 
 class ResponseCode:
@@ -14,7 +14,7 @@ class ResponseCode:
 
 
 TEST_RESPONSES = {
-    "word_test.py": {
+    "test_word.py": {
         "docstring": "Validate Word normalization, synonym handling, file serialization, and bad input parsing.",
         "tests": [
             "word normalizes english",
@@ -28,7 +28,7 @@ TEST_RESPONSES = {
             "bad line returns None",
         ],
     },
-    "trie_test.py": {
+    "test_trie.py": {
         "docstring": "Validate Trie insert, exact search, missing search, and prefix lookup behavior.",
         "tests": [
             "trie finds inserted word",
@@ -37,18 +37,20 @@ TEST_RESPONSES = {
             "trie rejects missing prefix",
         ],
     },
-    "levenshtein_test.py": {
-        "docstring": "Validate Levenshtein distance operations and threshold selection.",
+    "test_levenshtein.py": {
+        "docstring": "Validate Levenshtein distance operations and row calculation helpers.",
         "tests": [
-            "same word",
-            "one insertion",
-            "one deletion",
-            "one substitution",
-            "kitten sitting",
-            "short threshold",
+            "test_distance_for_same_word_is_zero",
+            "test_distance_handles_one_insertion",
+            "test_distance_handles_one_deletion",
+            "test_distance_handles_one_substitution",
+            "test_distance_handles_multiple_edits",
+            "test_initial_row_matches_target_word_length",
+            "test_calculate_next_row_for_matching_character",
+            "test_calculate_next_row_for_mismatching_character",
         ],
     },
-    "validator_test.py": {
+    "test_validator.py": {
         "docstring": "Validate empty checks, English words, Vietnamese meanings, menu choices, and dictionary lines.",
         "tests": [
             "empty spaces detected",
@@ -63,7 +65,7 @@ TEST_RESPONSES = {
             "short dictionary line rejected",
         ],
     },
-    "dynamic_array_test.py": {
+    "test_dynamic_array.py": {
         "docstring": "Validate DynamicArray growth, indexing, updates, removal, conversion, and clearing.",
         "tests": [
             "array starts empty",
@@ -76,7 +78,7 @@ TEST_RESPONSES = {
             "array clears",
         ],
     },
-    "history_list_test.py": {
+    "test_history_list.py": {
         "docstring": "Validate HistoryList count, maximum size trimming, item order, and clearing.",
         "tests": [
             "history starts empty",
@@ -85,7 +87,7 @@ TEST_RESPONSES = {
             "history clears",
         ],
     },
-    "favorite_list_test.py": {
+    "test_favorite_list.py": {
         "docstring": "Validate FavoriteList add, duplicate handling, contains, count, removal, and missing removal.",
         "tests": [
             "favorite add succeeds",
@@ -97,7 +99,7 @@ TEST_RESPONSES = {
             "favorite remove missing rejected",
         ],
     },
-    "file_service_test.py": {
+    "test_file_service.py": {
         "docstring": "Validate file creation, dictionary/history/favorites loading, saving, and round trips.",
         "tests": [
             "file service creates dictionary",
@@ -111,7 +113,7 @@ TEST_RESPONSES = {
             "favorites round trip",
         ],
     },
-    "dictionary_service_test.py": {
+    "test_dictionary_service.py": {
         "docstring": "Validate DictionaryService add, duplicate rejection, validation, exact and approximate search, favorites, existence, and persistence.",
         "tests": [
             "service adds new word",
@@ -127,18 +129,15 @@ TEST_RESPONSES = {
             "service saves data",
         ],
     },
-    "TestFuzzySearch.py": {
-        "docstring": "Validate the new Levenshtein row-based helper and FuzzySearch suggestion behavior.",
+    "test_fuzzy_search.py": {
+        "docstring": "Validate FuzzySearch distance thresholds and suggestion behavior.",
         "tests": [
-            "testGetInitialRow",
-            "testCalculateNextRowMatch",
-            "testCalculateNextRowMismatch",
-            "testGetMaxDistanceLogic",
-            "testExactMatch",
-            "testTypoMatchShortWord",
-            "testExceedMaxDistance",
-            "testMaxSuggestionsLimit",
-            "testEmptyString",
+            "test_get_max_distance_uses_config_thresholds",
+            "test_exact_match_is_first_suggestion",
+            "test_typo_match_for_short_word_returns_close_words",
+            "test_word_exceeding_max_distance_returns_no_suggestions",
+            "test_suggestions_do_not_exceed_config_limit",
+            "test_empty_string_returns_empty_list",
         ],
     },
 }
