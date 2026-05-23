@@ -1,3 +1,6 @@
+from config.ResponseCode import ResponseCode
+
+
 class TestRunner:
     """Tiny test runner used instead of external test libraries."""
 
@@ -10,10 +13,10 @@ class TestRunner:
         self.total_tests += 1
         if condition:
             self.passed_tests += 1
-            print("[PASS]", test_name)
+            print(ResponseCode.PASS_LABEL, test_name)
         else:
             self.failed_tests += 1
-            print("[FAIL]", test_name)
+            print(ResponseCode.FAIL_LABEL, test_name)
 
     def assert_false(self, condition, test_name):
         self.assert_true(not condition, test_name)
@@ -22,10 +25,13 @@ class TestRunner:
         self.total_tests += 1
         if expected == actual:
             self.passed_tests += 1
-            print("[PASS]", test_name)
+            print(ResponseCode.PASS_LABEL, test_name)
         else:
             self.failed_tests += 1
-            print(f"[FAIL] {test_name}: expected {expected!r}, got {actual!r}")
+            print(
+                f"{ResponseCode.FAIL_LABEL} {test_name}: "
+                f"expected {expected!r}, got {actual!r}"
+            )
 
     def print_summary(self):
         print("\nTest summary")

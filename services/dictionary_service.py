@@ -1,4 +1,4 @@
-from algorithms.levenshtein import Levenshtein
+from algorithms.FuzzySearch import FuzzySearch
 from config.app_config import AppConfig
 from models.favorite_list import FavoriteList
 from models.history_list import HistoryList
@@ -69,14 +69,15 @@ class DictionaryService:
         normalized = StringUtils.normalize_word(word)
         if not normalized:
             return []
-        threshold = Levenshtein.get_threshold(len(normalized))
-        suggestions = []
-        for current in self.words.to_list():
-            distance = Levenshtein.distance(normalized, current.get_english())
-            if distance <= threshold:
-                suggestions.append((distance, current))
-        suggestions.sort(key=lambda item: (item[0], item[1].get_english()))
-        return [item[1] for item in suggestions[: AppConfig.MAX_SUGGESTIONS]]
+        fuzzy_root = self._build_fuzzy_root()
+        fuzzy_search = FuzzySearch(fuzzy_root)
+        suggested_words = fuzzy_search.getSuggestions(normalized)
+        results = []
+        for english in suggested_words:
+            found = self.trie.search(english)
+            if found is not None:
+                results.append(found)
+        return results
 
     def add_word_interactive(self):
         english = input("English word: ")
@@ -165,3 +166,25 @@ class DictionaryService:
         for index, word in enumerate(suggestions, start=1):
             print(f"{index}. {word.get_english()} - {word.get_vietnamese()}")
         return suggestions
+
+    def _build_fuzzy_root(self):
+        root = _FuzzyTrieNode()
+        for word in self.words.to_list():
+            root.insert(word.get_english())
+        return root
+
+
+class _FuzzyTrieNode:
+    def __init__(self):
+        self.children = {}
+        self.isEndOfWord = False
+
+    def insert(self, word):
+        node = self
+        for char in StringUtils.normalize_word(word):
+            if char < AppConfig.FIRST_CHAR or char > AppConfig.LAST_CHAR:
+                continue
+            if char not in node.children:
+                node.children[char] = _FuzzyTrieNode()
+            node = node.children[char]
+        node.isEndOfWord = True

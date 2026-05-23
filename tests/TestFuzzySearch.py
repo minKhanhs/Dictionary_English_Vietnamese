@@ -5,10 +5,24 @@ import os
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
-from config.AppConfig import AppConfig
-from structures.Trie import TrieNode
+from config.app_config import AppConfig
 from algorithms.Levenshtein import Levenshtein
 from algorithms.FuzzySearch import FuzzySearch
+
+
+class FakeFuzzyTrieNode:
+    def __init__(self):
+        self.children = {}
+        self.isEndOfWord = False
+
+    def insert(self, word):
+        node = self
+        for char in word:
+            if char not in node.children:
+                node.children[char] = FakeFuzzyTrieNode()
+            node = node.children[char]
+        node.isEndOfWord = True
+
 
 class TestLevenshtein(unittest.TestCase):
     """
@@ -49,7 +63,7 @@ class TestFuzzySearch(unittest.TestCase):
     """
     def setUp(self):
         # 1. Khởi tạo cây Trie giả lập
-        self.trieRoot = TrieNode()
+        self.trieRoot = FakeFuzzyTrieNode()
         self.dictionaryWords = [
             "hello", "hell", "helicopter", "hero", 
             "help", "healer", "halo", "cat", "car"
