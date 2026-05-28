@@ -1,5 +1,5 @@
-from config.app_config import AppConfig
-from structures.trie import TrieNode
+from config.AppConfig import AppConfig
+from structures.Trie import TrieNode
 from algorithms.Levenshtein import Levenshtein
 
 # Tìm kiếm gần đúng (fuzzy search) trong Trie bằng thuật toán Levenshtein.
