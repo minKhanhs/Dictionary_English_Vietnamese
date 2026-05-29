@@ -36,4 +36,4 @@ class AppConfig:
     
     # Lựa chọn Menu
     MIN_MENU_OPTION = 0
-    MAX_MENU_OPTION = 9
+    MAX_MENU_OPTION = 11
