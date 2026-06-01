@@ -117,8 +117,10 @@ class DictionaryService:
     def searchApproximate(self, word):
         """Tìm gần đúng dùng FuzzySearch (Trie + Levenshtein đệ quy)."""
         normalized = StringUtils.normalizeWord(word) if word else ""
-        if not normalized or not self.fuzzySearch:
+        if not normalized:
             return []
+        if not self.fuzzySearch:
+            self.fuzzySearch = FuzzySearch(self.trieRoot)
         matchedWords = []
         for suggestion in self.fuzzySearch.getSuggestions(normalized):
             found = self._findWord(suggestion)
@@ -247,6 +249,7 @@ class DictionaryService:
         for i in range(self.words.size()):
             w = self.words.get(i)
             self.trieRoot.insert(w.getEnglish())
+        self.fuzzySearch = FuzzySearch(self.trieRoot)
 
     def _wordsToList(self):
         result = []
