@@ -1,17 +1,15 @@
-# UI Menu - Giao diện menu console cho từ điển Anh-Việt
-
 from config.AppConfig import AppConfig
 from services.DictionaryService import DictionaryService
 from validate.Validation import Validation
 
 
 class Menu:
-    """Giao diện menu console. Chỉ gọi DictionaryService, không xử lý nghiệp vụ."""
+    """Giao diện menu console. Chỉ gọi DictionaryService."""
 
-    def __init__(self, dictionary_service=None):
-        self.dictionary_service = dictionary_service or DictionaryService()
+    def __init__(self, dictionaryService=None):
+        self.dictionaryService = dictionaryService or DictionaryService()
 
-    def show_main_menu(self):
+    def showMainMenu(self):
         print("\n===== TỪ ĐIỂN ANH - VIỆT =====")
         print("1.  Thêm từ mới")
         print("2.  Thêm từ đồng nghĩa")
@@ -26,8 +24,7 @@ class Menu:
         print("11. Xóa từ điển")
         print("0.  Thoát")
 
-    def input_choice(self):
-        """Nhập lựa chọn menu. Xử lý nhập sai kiểu."""
+    def inputChoice(self):
         while True:
             choice = input("Chọn chức năng: ")
             if Validation.isValidMenuOption(choice):
@@ -35,37 +32,36 @@ class Menu:
             print("Lựa chọn không hợp lệ. Vui lòng nhập số từ 0 đến 11.")
 
     def run(self):
-        """Vòng lặp menu chính."""
-        self.dictionary_service.load_data()
+        self.dictionaryService.loadData()
         while True:
-            self.show_main_menu()
-            choice = self.input_choice()
+            self.showMainMenu()
+            choice = self.inputChoice()
             if choice == 1:
-                self.dictionary_service.add_word_interactive()
+                self.dictionaryService.addWordInteractive()
             elif choice == 2:
-                self.dictionary_service.add_synonym_interactive()
+                self.dictionaryService.addSynonymInteractive()
             elif choice == 3:
-                self.dictionary_service.search_exact_interactive()
+                self.dictionaryService.searchExactInteractive()
             elif choice == 4:
-                self.dictionary_service.search_approximate_interactive()
+                self.dictionaryService.searchApproximateInteractive()
             elif choice == 5:
-                self.dictionary_service.show_history()
+                self.dictionaryService.showHistory()
             elif choice == 6:
-                self.dictionary_service.add_favorite_interactive()
+                self.dictionaryService.addFavoriteInteractive()
             elif choice == 7:
-                self.dictionary_service.remove_favorite_interactive()
+                self.dictionaryService.removeFavoriteInteractive()
             elif choice == 8:
-                self.dictionary_service.show_favorites()
+                self.dictionaryService.showFavorites()
             elif choice == 9:
-                self.dictionary_service.display_all_words()
+                self.dictionaryService.displayAllWords()
             elif choice == 10:
-                if self.dictionary_service.save_data():
+                if self.dictionaryService.saveData():
                     print("Đã lưu dữ liệu.")
                 else:
                     print("Lưu dữ liệu thất bại.")
             elif choice == 11:
-                self.dictionary_service.delete_word_interactive()
+                self.dictionaryService.deleteWordInteractive()
             elif choice == 0:
-                self.dictionary_service.save_data()
+                self.dictionaryService.saveData()
                 print("Tạm biệt!")
                 break

@@ -1,5 +1,3 @@
-# Test Word model - Kiểm tra model Word
-
 import unittest
 import sys
 import os
@@ -13,125 +11,98 @@ from models.Word import Word
 
 
 class TestWord(unittest.TestCase):
-    """Test Suite: Kiểm tra model Word"""
+    """Kiểm tra model Word."""
 
     def setUp(self):
         self.word = Word("Hello", "Xin chào", "Hello, how are you?", ["hi", "hey"])
 
-    # --- Khởi tạo ---
+    def testCreate(self):
+        self.assertEqual(self.word.getEnglish(), "hello")
+        self.assertEqual(self.word.getVietnamese(), "Xin chào")
+        self.assertEqual(self.word.getExample(), "Hello, how are you?")
+        self.assertEqual(self.word.getSynonyms(), ["hi", "hey"])
 
-    def test_create_word(self):
-        """Tạo word với đầy đủ thuộc tính"""
-        self.assertEqual(self.word.get_english(), "hello")
-        self.assertEqual(self.word.get_vietnamese(), "Xin chào")
-        self.assertEqual(self.word.get_example(), "Hello, how are you?")
-        self.assertEqual(self.word.get_synonyms(), ["hi", "hey"])
-
-    def test_create_word_normalizes_english(self):
-        """English phải được normalize về chữ thường, bỏ khoảng trắng thừa"""
+    def testNormalizeEnglish(self):
         w = Word("  HELLO  WORLD  ", "Nghĩa")
-        self.assertEqual(w.get_english(), "hello world")
+        self.assertEqual(w.getEnglish(), "hello world")
 
-    def test_create_word_empty(self):
-        """Word rỗng không crash"""
+    def testCreateEmpty(self):
         w = Word()
-        self.assertEqual(w.get_english(), "")
-        self.assertEqual(w.get_vietnamese(), "")
-        self.assertEqual(w.get_example(), "")
-        self.assertEqual(w.get_synonyms(), [])
+        self.assertEqual(w.getEnglish(), "")
+        self.assertEqual(w.getVietnamese(), "")
+        self.assertEqual(w.getExample(), "")
+        self.assertEqual(w.getSynonyms(), [])
 
-    # --- Setters ---
+    def testSetEnglish(self):
+        self.word.setEnglish("Goodbye")
+        self.assertEqual(self.word.getEnglish(), "goodbye")
 
-    def test_set_english(self):
-        self.word.set_english("Goodbye")
-        self.assertEqual(self.word.get_english(), "goodbye")
+    def testSetVietnamese(self):
+        self.word.setVietnamese("Tạm biệt")
+        self.assertEqual(self.word.getVietnamese(), "Tạm biệt")
 
-    def test_set_vietnamese(self):
-        self.word.set_vietnamese("Tạm biệt")
-        self.assertEqual(self.word.get_vietnamese(), "Tạm biệt")
+    def testSetExample(self):
+        self.word.setExample("Goodbye!")
+        self.assertEqual(self.word.getExample(), "Goodbye!")
 
-    def test_set_example(self):
-        self.word.set_example("Goodbye!")
-        self.assertEqual(self.word.get_example(), "Goodbye!")
-
-    # --- Synonym ---
-
-    def test_add_synonym_success(self):
-        """Thêm synonym hợp lệ"""
-        result = self.word.add_synonym("greetings")
+    def testAddSynonymSuccess(self):
+        result = self.word.addSynonym("greetings")
         self.assertTrue(result)
-        self.assertIn("greetings", self.word.get_synonyms())
+        self.assertIn("greetings", self.word.getSynonyms())
 
-    def test_add_synonym_duplicate_rejected(self):
-        """Không thêm synonym trùng"""
-        result = self.word.add_synonym("hi")
+    def testAddSynonymDuplicate(self):
+        result = self.word.addSynonym("hi")
         self.assertFalse(result)
-        # Đảm bảo không bị thêm 2 lần
-        self.assertEqual(self.word.get_synonym_count(), 2)
+        self.assertEqual(self.word.getSynonymCount(), 2)
 
-    def test_add_synonym_invalid_rejected(self):
-        """Không thêm synonym có số hoặc ký tự đặc biệt"""
-        result = self.word.add_synonym("hi123")
+    def testAddSynonymInvalid(self):
+        result = self.word.addSynonym("hi123")
         self.assertFalse(result)
 
-    def test_add_synonym_max_limit(self):
-        """Không vượt quá MAX_SYNONYMS"""
+    def testAddSynonymMaxLimit(self):
         w = Word("test", "nghĩa")
         for i in range(AppConfig.MAX_SYNONYMS):
-            # Dùng từ hợp lệ (chỉ chữ cái)
-            w.add_synonym(chr(ord("a") + (i % 26)) + chr(ord("a") + ((i + 1) % 26)))
-        # Lần thứ MAX_SYNONYMS + 1 phải bị từ chối
-        result = w.add_synonym("overflow")
+            w.addSynonym(chr(ord("a") + (i % 26)) + chr(ord("a") + ((i + 1) % 26)))
+        result = w.addSynonym("overflow")
         self.assertFalse(result)
-        self.assertEqual(w.get_synonym_count(), AppConfig.MAX_SYNONYMS)
+        self.assertEqual(w.getSynonymCount(), AppConfig.MAX_SYNONYMS)
 
-    def test_has_synonym(self):
-        self.assertTrue(self.word.has_synonym("hi"))
-        self.assertTrue(self.word.has_synonym("HI"))
-        self.assertFalse(self.word.has_synonym("bye"))
+    def testHasSynonym(self):
+        self.assertTrue(self.word.hasSynonym("hi"))
+        self.assertTrue(self.word.hasSynonym("HI"))
+        self.assertFalse(self.word.hasSynonym("bye"))
 
-    def test_get_synonym_count(self):
-        self.assertEqual(self.word.get_synonym_count(), 2)
+    def testGetSynonymCount(self):
+        self.assertEqual(self.word.getSynonymCount(), 2)
 
-    # --- Serialization ---
-
-    def test_to_file_line(self):
-        """Chuyển Word thành dòng file với FIELD_SEPARATOR"""
-        line = self.word.to_file_line()
+    def testToFileLine(self):
+        line = self.word.toFileLine()
         self.assertIn(AppConfig.FIELD_SEPARATOR, line)
         parts = line.split(AppConfig.FIELD_SEPARATOR)
         self.assertEqual(parts[0], "hello")
         self.assertEqual(parts[1], "Xin chào")
-        self.assertEqual(parts[2], "Hello, how are you?")
-        # Synonyms dùng LIST_SEPARATOR
         self.assertEqual(parts[3], "hi,hey")
 
-    def test_from_file_line_valid(self):
-        """Parse dòng file hợp lệ thành Word"""
+    def testFromFileLineValid(self):
         line = "hello|Xin chào|Hello, how are you?|hi,hey"
-        w = Word.from_file_line(line)
+        w = Word.fromFileLine(line)
         self.assertIsNotNone(w)
-        self.assertEqual(w.get_english(), "hello")
-        self.assertEqual(w.get_vietnamese(), "Xin chào")
-        self.assertIn("hi", w.get_synonyms())
-        self.assertIn("hey", w.get_synonyms())
+        self.assertEqual(w.getEnglish(), "hello")
+        self.assertIn("hi", w.getSynonyms())
 
-    def test_from_file_line_invalid(self):
-        """Dòng file không hợp lệ trả về None"""
-        self.assertIsNone(Word.from_file_line(""))
-        self.assertIsNone(Word.from_file_line(None))
-        # Thiếu field
-        self.assertIsNone(Word.from_file_line("hello|nghĩa"))
+    def testFromFileLineInvalid(self):
+        self.assertIsNone(Word.fromFileLine(""))
+        self.assertIsNone(Word.fromFileLine(None))
+        self.assertIsNone(Word.fromFileLine("hello|nghĩa"))
 
-    def test_roundtrip_serialization(self):
-        """to_file_line → from_file_line phải khớp"""
-        line = self.word.to_file_line()
-        restored = Word.from_file_line(line)
+    def testRoundtrip(self):
+        line = self.word.toFileLine()
+        restored = Word.fromFileLine(line)
         self.assertIsNotNone(restored)
-        self.assertEqual(restored.get_english(), self.word.get_english())
-        self.assertEqual(restored.get_vietnamese(), self.word.get_vietnamese())
-        self.assertEqual(restored.get_example(), self.word.get_example())
-        self.assertEqual(restored.get_synonyms(), self.word.get_synonyms())
+        self.assertEqual(restored.getEnglish(), self.word.getEnglish())
+        self.assertEqual(restored.getVietnamese(), self.word.getVietnamese())
+        self.assertEqual(restored.getExample(), self.word.getExample())
+        self.assertEqual(restored.getSynonyms(), self.word.getSynonyms())
 
 
 if __name__ == "__main__":
