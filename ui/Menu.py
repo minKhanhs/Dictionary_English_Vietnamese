@@ -1,4 +1,5 @@
 from config.AppConfig import AppConfig
+from config.ResponseCode import ResponseCode
 from services.DictionaryService import DictionaryService
 from validate.Validation import Validation
 
@@ -32,36 +33,45 @@ class Menu:
             print("Lựa chọn không hợp lệ. Vui lòng nhập số từ 0 đến 11.")
 
     def run(self):
-        self.dictionaryService.loadData()
+        try:
+            self.dictionaryService.loadData()
+        except Exception as e:
+            print(f"{ResponseCode.FAIL_LABEL} loadData: {e}")
         while True:
-            self.showMainMenu()
-            choice = self.inputChoice()
-            if choice == 1:
-                self.dictionaryService.addWordInteractive()
-            elif choice == 2:
-                self.dictionaryService.addSynonymInteractive()
-            elif choice == 3:
-                self.dictionaryService.searchExactInteractive()
-            elif choice == 4:
-                self.dictionaryService.searchApproximateInteractive()
-            elif choice == 5:
-                self.dictionaryService.showHistory()
-            elif choice == 6:
-                self.dictionaryService.addFavoriteInteractive()
-            elif choice == 7:
-                self.dictionaryService.removeFavoriteInteractive()
-            elif choice == 8:
-                self.dictionaryService.showFavorites()
-            elif choice == 9:
-                self.dictionaryService.displayAllWords()
-            elif choice == 10:
-                if self.dictionaryService.saveData():
-                    print("Đã lưu dữ liệu.")
-                else:
-                    print("Lưu dữ liệu thất bại.")
-            elif choice == 11:
-                self.dictionaryService.deleteWordInteractive()
-            elif choice == 0:
-                self.dictionaryService.saveData()
-                print("Tạm biệt!")
+            try:
+                self.showMainMenu()
+                choice = self.inputChoice()
+                if choice == 1:
+                    self.dictionaryService.addWordInteractive()
+                elif choice == 2:
+                    self.dictionaryService.addSynonymInteractive()
+                elif choice == 3:
+                    self.dictionaryService.searchExactInteractive()
+                elif choice == 4:
+                    self.dictionaryService.searchApproximateInteractive()
+                elif choice == 5:
+                    self.dictionaryService.showHistory()
+                elif choice == 6:
+                    self.dictionaryService.addFavoriteInteractive()
+                elif choice == 7:
+                    self.dictionaryService.removeFavoriteInteractive()
+                elif choice == 8:
+                    self.dictionaryService.showFavorites()
+                elif choice == 9:
+                    self.dictionaryService.displayAllWords()
+                elif choice == 10:
+                    if self.dictionaryService.saveData():
+                        print("Đã lưu dữ liệu.")
+                    else:
+                        print("Lưu dữ liệu thất bại.")
+                elif choice == 11:
+                    self.dictionaryService.deleteWordInteractive()
+                elif choice == 0:
+                    self.dictionaryService.saveData()
+                    print("Tạm biệt!")
+                    break
+            except KeyboardInterrupt:
+                print(f"\n{ResponseCode.SKIP_LABEL} Đã dừng bởi người dùng.")
                 break
+            except Exception as e:
+                print(f"{ResponseCode.FAIL_LABEL} Lỗi xử lý menu: {e}")

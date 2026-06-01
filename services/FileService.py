@@ -1,6 +1,7 @@
 import os
 
 from config.AppConfig import AppConfig
+from config.ResponseCode import ResponseCode
 from models.Word import Word
 from utils.StringUtils import StringUtils
 
@@ -27,8 +28,9 @@ class FileService:
                     word = Word.fromFileLine(line)
                     if word is not None:
                         words.append(word)
+            print(f"{ResponseCode.PASS_LABEL} loadDictionary")
         except OSError as e:
-            print("Không thể đọc file từ điển:", e)
+            print(f"{ResponseCode.FAIL_LABEL} Không thể đọc file từ điển: {e}")
         return words
 
     def saveDictionary(self, wordsList):
@@ -37,9 +39,10 @@ class FileService:
             with open(AppConfig.DICTIONARY_FILE, "w", encoding="utf-8") as f:
                 for word in wordsList:
                     f.write(word.toFileLine() + "\n")
+            print(f"{ResponseCode.PASS_LABEL} saveDictionary")
             return True
         except OSError as e:
-            print("Không thể ghi file từ điển:", e)
+            print(f"{ResponseCode.FAIL_LABEL} Không thể ghi file từ điển: {e}")
             return False
 
     def loadHistory(self):
@@ -63,8 +66,9 @@ class FileService:
                     normalized = StringUtils.normalizeWord(line)
                     if normalized:
                         items.append(normalized)
+            print(f"{ResponseCode.PASS_LABEL} _loadSimpleFile({path})")
         except OSError as e:
-            print("Không thể đọc file:", e)
+            print(f"{ResponseCode.FAIL_LABEL} Không thể đọc file {path}: {e}")
         return items
 
     def _saveSimpleFile(self, path, values):
@@ -76,7 +80,8 @@ class FileService:
                     normalized = StringUtils.normalizeWord(item)
                     if normalized:
                         f.write(normalized + "\n")
+            print(f"{ResponseCode.PASS_LABEL} _saveSimpleFile({path})")
             return True
         except OSError as e:
-            print("Không thể ghi file:", e)
+            print(f"{ResponseCode.FAIL_LABEL} Không thể ghi file {path}: {e}")
             return False

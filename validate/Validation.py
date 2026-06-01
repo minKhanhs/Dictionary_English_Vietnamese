@@ -1,5 +1,6 @@
 from utils.StringUtils import StringUtils
 from config.AppConfig import AppConfig
+from config.ResponseCode import ResponseCode
 class Validation:
 
     @staticmethod
@@ -50,7 +51,8 @@ class Validation:
         try:
             option = int(val)
             return AppConfig.MIN_MENU_OPTION <= option <= AppConfig.MAX_MENU_OPTION
-        except (ValueError,TypeError):
+        except (ValueError, TypeError):
+            print(f"{ResponseCode.FAIL_LABEL} isValidMenuOption: '{val}' không phải số hợp lệ")
             return False
     
     @staticmethod
