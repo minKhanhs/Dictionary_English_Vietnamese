@@ -1,12 +1,10 @@
-# Model Word - Đại diện cho một mục từ trong từ điển Anh-Việt
-
 from config.AppConfig import AppConfig
 from utils.StringUtils import StringUtils
 from validate.Validation import Validation
 
 
 class Word:
-    """Mục từ điển: từ tiếng Anh kèm nghĩa tiếng Việt, ví dụ, từ đồng nghĩa."""
+    """Từ điển entry: english, vietnamese, example, synonyms."""
 
     def __init__(self, english="", vietnamese="", example="", synonyms=None):
         self.english = StringUtils.normalizeWord(english) if english else ""
@@ -15,59 +13,49 @@ class Word:
         self.synonyms = []
         if synonyms:
             for synonym in synonyms:
-                self.add_synonym(synonym)
+                self.addSynonym(synonym)
 
-    # --- Getters ---
-
-    def get_english(self):
+    def getEnglish(self):
         return self.english
 
-    def get_vietnamese(self):
+    def getVietnamese(self):
         return self.vietnamese
 
-    def get_example(self):
+    def getExample(self):
         return self.example
 
-    def get_synonyms(self):
+    def getSynonyms(self):
         return list(self.synonyms)
 
-    def get_synonym_count(self):
+    def getSynonymCount(self):
         return len(self.synonyms)
 
-    # --- Setters ---
-
-    def set_english(self, english):
+    def setEnglish(self, english):
         self.english = StringUtils.normalizeWord(english) if english else ""
 
-    def set_vietnamese(self, vietnamese):
+    def setVietnamese(self, vietnamese):
         self.vietnamese = str(vietnamese).strip() if vietnamese else ""
 
-    def set_example(self, example):
+    def setExample(self, example):
         self.example = str(example).strip() if example else ""
 
-    # --- Synonym management ---
-
-    def add_synonym(self, synonym):
-        """Thêm từ đồng nghĩa. Trả về True nếu thành công."""
+    def addSynonym(self, synonym):
+        """Thêm synonym. Không trùng, không vượt MAX_SYNONYMS."""
         normalized = StringUtils.normalizeWord(synonym) if synonym else ""
         if not Validation.isEnglishWord(normalized):
             return False
-        if self.has_synonym(normalized):
+        if self.hasSynonym(normalized):
             return False
         if len(self.synonyms) >= AppConfig.MAX_SYNONYMS:
             return False
         self.synonyms.append(normalized)
         return True
 
-    def has_synonym(self, synonym):
-        """Kiểm tra từ đồng nghĩa đã tồn tại chưa."""
+    def hasSynonym(self, synonym):
         normalized = StringUtils.normalizeWord(synonym) if synonym else ""
         return normalized in self.synonyms
 
-    # --- Display & Serialization ---
-
     def display(self):
-        """In thông tin từ ra console."""
         print("English:", self.english)
         print("Vietnamese:", self.vietnamese)
         if self.example:
@@ -75,8 +63,7 @@ class Word:
         if self.synonyms:
             print("Synonyms:", StringUtils.join(self.synonyms, ", "))
 
-    def to_file_line(self):
-        """Chuyển thành dòng để ghi file. Dùng FIELD_SEPARATOR và LIST_SEPARATOR."""
+    def toFileLine(self):
         return AppConfig.FIELD_SEPARATOR.join([
             self.english,
             self.vietnamese,
@@ -85,8 +72,8 @@ class Word:
         ])
 
     @staticmethod
-    def from_file_line(line):
-        """Parse dòng file thành Word. Trả về None nếu dòng không hợp lệ."""
+    def fromFileLine(line):
+        """Parse dòng file thành Word, None nếu không hợp lệ."""
         if not line:
             return None
         if not Validation.isValidDictionaryEntry(str(line)):

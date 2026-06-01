@@ -1,5 +1,3 @@
-# Test FavoriteList - Kiểm tra quản lý danh sách từ yêu thích
-
 import unittest
 import sys
 import os
@@ -12,122 +10,88 @@ from models.FavoriteList import FavoriteList
 
 
 class TestFavoriteList(unittest.TestCase):
-    """Test Suite: Kiểm tra FavoriteList (danh sách từ yêu thích)"""
+    """Kiểm tra FavoriteList (danh sách từ yêu thích)."""
 
     def setUp(self):
         self.fav = FavoriteList()
 
-    # --- Add ---
+    def testAddSuccess(self):
+        self.assertTrue(self.fav.add("hello"))
+        self.assertEqual(self.fav.getCount(), 1)
 
-    def test_add_success(self):
-        """Thêm từ yêu thích thành công"""
-        result = self.fav.add("hello")
-        self.assertTrue(result)
-        self.assertEqual(self.fav.get_count(), 1)
-
-    def test_add_normalizes_word(self):
-        """Từ được normalize khi thêm"""
+    def testAddNormalizes(self):
         self.fav.add("  HELLO  ")
         self.assertTrue(self.fav.contains("hello"))
-        self.assertEqual(self.fav.get_item(0), "hello")
+        self.assertEqual(self.fav.getItem(0), "hello")
 
-    def test_add_duplicate_rejected(self):
-        """Không thêm từ trùng"""
+    def testAddDuplicateRejected(self):
         self.fav.add("hello")
-        result = self.fav.add("hello")
-        self.assertFalse(result)
-        self.assertEqual(self.fav.get_count(), 1)
+        self.assertFalse(self.fav.add("hello"))
+        self.assertEqual(self.fav.getCount(), 1)
 
-    def test_add_duplicate_case_insensitive(self):
-        """Trùng kể cả khác hoa/thường"""
+    def testAddDuplicateCaseInsensitive(self):
         self.fav.add("hello")
-        result = self.fav.add("HELLO")
-        self.assertFalse(result)
-        self.assertEqual(self.fav.get_count(), 1)
+        self.assertFalse(self.fav.add("HELLO"))
+        self.assertEqual(self.fav.getCount(), 1)
 
-    def test_add_empty_rejected(self):
-        """Không thêm từ rỗng"""
+    def testAddEmptyRejected(self):
         self.assertFalse(self.fav.add(""))
         self.assertFalse(self.fav.add(None))
 
-    # --- Remove ---
-
-    def test_remove_success(self):
-        """Xóa từ yêu thích thành công"""
+    def testRemoveSuccess(self):
         self.fav.add("hello")
-        result = self.fav.remove("hello")
-        self.assertTrue(result)
-        self.assertEqual(self.fav.get_count(), 0)
+        self.assertTrue(self.fav.remove("hello"))
+        self.assertEqual(self.fav.getCount(), 0)
 
-    def test_remove_not_found(self):
-        """Xóa từ không tồn tại trả về False"""
-        result = self.fav.remove("hello")
-        self.assertFalse(result)
+    def testRemoveNotFound(self):
+        self.assertFalse(self.fav.remove("hello"))
 
-    def test_remove_case_insensitive(self):
-        """Xóa không phân biệt hoa thường"""
+    def testRemoveCaseInsensitive(self):
         self.fav.add("hello")
-        result = self.fav.remove("HELLO")
-        self.assertTrue(result)
-        self.assertEqual(self.fav.get_count(), 0)
+        self.assertTrue(self.fav.remove("HELLO"))
+        self.assertEqual(self.fav.getCount(), 0)
 
-    # --- Contains ---
-
-    def test_contains_true(self):
+    def testContainsTrue(self):
         self.fav.add("hello")
         self.assertTrue(self.fav.contains("hello"))
         self.assertTrue(self.fav.contains("HELLO"))
 
-    def test_contains_false(self):
+    def testContainsFalse(self):
         self.assertFalse(self.fav.contains("hello"))
 
-    # --- Get item ---
-
-    def test_get_item_valid(self):
+    def testGetItemValid(self):
         self.fav.add("hello")
         self.fav.add("world")
-        self.assertEqual(self.fav.get_item(0), "hello")
-        self.assertEqual(self.fav.get_item(1), "world")
+        self.assertEqual(self.fav.getItem(0), "hello")
+        self.assertEqual(self.fav.getItem(1), "world")
 
-    def test_get_item_out_of_bounds(self):
-        """Lấy item ngoài phạm vi trả về None"""
-        self.assertIsNone(self.fav.get_item(0))
-        self.assertIsNone(self.fav.get_item(-1))
+    def testGetItemOutOfBounds(self):
+        self.assertIsNone(self.fav.getItem(0))
+        self.assertIsNone(self.fav.getItem(-1))
 
-    # --- Clear ---
-
-    def test_clear(self):
-        """Xóa toàn bộ danh sách"""
+    def testClear(self):
         self.fav.add("hello")
         self.fav.add("world")
         self.fav.clear()
-        self.assertEqual(self.fav.get_count(), 0)
-        self.assertEqual(self.fav.to_list(), [])
+        self.assertEqual(self.fav.getCount(), 0)
+        self.assertEqual(self.fav.toList(), [])
 
-    # --- to_list ---
-
-    def test_to_list(self):
-        """Trả về bản sao danh sách"""
+    def testToList(self):
         self.fav.add("a")
         self.fav.add("b")
-        result = self.fav.to_list()
+        result = self.fav.toList()
         self.assertEqual(result, ["a", "b"])
-        # Bản sao
         result.append("c")
-        self.assertEqual(self.fav.get_count(), 2)
+        self.assertEqual(self.fav.getCount(), 2)
 
-    def test_to_list_empty(self):
-        self.assertEqual(self.fav.to_list(), [])
+    def testToListEmpty(self):
+        self.assertEqual(self.fav.toList(), [])
 
-    # --- Multiple operations ---
-
-    def test_add_remove_add(self):
-        """Thêm → xóa → thêm lại cùng từ được phép"""
+    def testAddRemoveAdd(self):
         self.fav.add("hello")
         self.fav.remove("hello")
-        result = self.fav.add("hello")
-        self.assertTrue(result)
-        self.assertEqual(self.fav.get_count(), 1)
+        self.assertTrue(self.fav.add("hello"))
+        self.assertEqual(self.fav.getCount(), 1)
 
 
 if __name__ == "__main__":
