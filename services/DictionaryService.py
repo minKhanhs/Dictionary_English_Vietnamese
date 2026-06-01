@@ -1,5 +1,6 @@
-from algorithms.Levenshtein import Levenshtein
+from algorithms.FuzzySearch import FuzzySearch
 from config.AppConfig import AppConfig
+from config.ResponseCode import ResponseCode
 from models.FavoriteList import FavoriteList
 from models.HistoryList import HistoryList
 from models.Word import Word
@@ -15,6 +16,7 @@ class DictionaryService:
 
     def __init__(self, fileService=None):
         self.trieRoot = TrieNode()
+        self.fuzzySearch = None
         self.words = ArrayList()
         self.history = HistoryList()
         self.favorites = FavoriteList()
@@ -22,24 +24,38 @@ class DictionaryService:
 
     def loadData(self):
         """Tải dữ liệu từ file vào bộ nhớ."""
-        self.trieRoot = TrieNode()
-        self.words = ArrayList()
-        self.history.clear()
-        self.favorites.clear()
-        for word in self.fileService.loadDictionary():
-            self.words.add(word)
-            self.trieRoot.insert(word.getEnglish())
-        for item in self.fileService.loadHistory():
-            self.history.add(item)
-        for item in self.fileService.loadFavorites():
-            self.favorites.add(item)
+        try:
+            self.trieRoot = TrieNode()
+            self.words = ArrayList()
+            self.history.clear()
+            self.favorites.clear()
+            for word in self.fileService.loadDictionary():
+                self.words.add(word)
+                self.trieRoot.insert(word.getEnglish())
+            for item in self.fileService.loadHistory():
+                self.history.add(item)
+            for item in self.fileService.loadFavorites():
+                self.favorites.add(item)
+            self.fuzzySearch = FuzzySearch(self.trieRoot)
+            print(f"{ResponseCode.PASS_LABEL} loadData")
+        except Exception as e:
+            print(f"{ResponseCode.FAIL_LABEL} loadData: {e}")
 
     def saveData(self):
-        wordList = self._wordsToList()
-        d = self.fileService.saveDictionary(wordList)
-        h = self.fileService.saveHistory(self.history)
-        f = self.fileService.saveFavorites(self.favorites)
-        return d and h and f
+        try:
+            wordList = self._wordsToList()
+            d = self.fileService.saveDictionary(wordList)
+            h = self.fileService.saveHistory(self.history)
+            f = self.fileService.saveFavorites(self.favorites)
+            success = d and h and f
+            if success:
+                print(f"{ResponseCode.PASS_LABEL} saveData")
+            else:
+                print(f"{ResponseCode.FAIL_LABEL} saveData: một hoặc nhiều file ghi thất bại")
+            return success
+        except Exception as e:
+            print(f"{ResponseCode.FAIL_LABEL} saveData: {e}")
+            return False
 
     # --- CREATE ---
 
@@ -99,25 +115,16 @@ class DictionaryService:
         return found
 
     def searchApproximate(self, word):
-        """Tìm gần đúng dùng Levenshtein."""
+        """Tìm gần đúng dùng FuzzySearch (Trie + Levenshtein đệ quy)."""
         normalized = StringUtils.normalizeWord(word) if word else ""
-        if not normalized:
+        if not normalized or not self.fuzzySearch:
             return []
-        lev = Levenshtein(normalized)
-        if len(normalized) <= AppConfig.SHORT_WORD_LENGTH:
-            threshold = AppConfig.SHORT_WORD_DISTANCE
-        elif len(normalized) <= AppConfig.MEDIUM_WORD_LENGTH:
-            threshold = AppConfig.MEDIUM_WORD_DISTANCE
-        else:
-            threshold = AppConfig.LONG_WORD_DISTANCE
-        suggestions = []
-        for i in range(self.words.size()):
-            w = self.words.get(i)
-            distance = lev.distance(w.getEnglish())
-            if distance <= threshold:
-                suggestions.append((distance, w))
-        suggestions.sort(key=lambda item: (item[0], item[1].getEnglish()))
-        return [item[1] for item in suggestions[:AppConfig.MAX_SUGGESTIONS]]
+        matchedWords = []
+        for suggestion in self.fuzzySearch.getSuggestions(normalized):
+            found = self._findWord(suggestion)
+            if found is not None:
+                matchedWords.append(found)
+        return matchedWords
 
     def searchExactInteractive(self):
         english = input("Từ tiếng Anh: ")
