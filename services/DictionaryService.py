@@ -51,7 +51,10 @@ class DictionaryService:
             if success:
                 print(f"{ResponseCode.PASS_LABEL} saveData")
             else:
-                print(f"{ResponseCode.FAIL_LABEL} saveData: một hoặc nhiều file ghi thất bại")
+                print(
+                    f"{ResponseCode.FAIL_LABEL} saveData: "
+                    "một hoặc nhiều file ghi thất bại"
+                )
             return success
         except Exception as e:
             print(f"{ResponseCode.FAIL_LABEL} saveData: {e}")
@@ -79,7 +82,9 @@ class DictionaryService:
         english = input("Từ tiếng Anh: ")
         vietnamese = input("Nghĩa tiếng Việt: ")
         example = input("Ví dụ (có thể để trống): ")
-        synonymsInput = input("Từ đồng nghĩa (cách nhau bởi dấu phẩy, có thể để trống): ")
+        synonymsInput = input(
+            "Từ đồng nghĩa (cách nhau bởi dấu phẩy, có thể để trống): "
+        )
         synonyms = []
         if synonymsInput and synonymsInput.strip():
             synonyms = [
@@ -167,6 +172,8 @@ class DictionaryService:
         found = False
         for i in range(self.words.size()):
             w = self.words.get(i)
+            if w is None:
+                continue
             if w.getEnglish() == normalized:
                 self.words.remove(i)
                 found = True
@@ -232,7 +239,9 @@ class DictionaryService:
             return
         for i in range(self.words.size()):
             print(f"\n{i + 1}.")
-            self.words.get(i).display()
+            word = self.words.get(i)
+            if word is not None:
+                word.display()
 
     # --- Internal ---
 
@@ -240,6 +249,8 @@ class DictionaryService:
         normalized = StringUtils.normalizeWord(english) if english else ""
         for i in range(self.words.size()):
             w = self.words.get(i)
+            if w is None:
+                continue
             if w.getEnglish() == normalized:
                 return w
         return None
@@ -248,6 +259,8 @@ class DictionaryService:
         self.trieRoot = TrieNode()
         for i in range(self.words.size()):
             w = self.words.get(i)
+            if w is None:
+                continue
             self.trieRoot.insert(w.getEnglish())
         self.fuzzySearch = FuzzySearch(self.trieRoot)
 

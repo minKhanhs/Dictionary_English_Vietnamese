@@ -15,7 +15,10 @@ class ResponseCode:
 
 TEST_RESPONSES = {
     "test_word.py": {
-        "docstring": "Validate Word normalization, synonym handling, file serialization, and bad input parsing.",
+        "docstring": (
+            "Validate Word normalization, synonym handling, file serialization, "
+            "and bad input parsing."
+        ),
         "tests": [
             "word normalizes english",
             "add synonym succeeds",
@@ -29,7 +32,10 @@ TEST_RESPONSES = {
         ],
     },
     "test_trie.py": {
-        "docstring": "Validate Trie insert, exact search, missing search, and prefix lookup behavior.",
+        "docstring": (
+            "Validate Trie insert, exact search, missing search, and prefix "
+            "lookup behavior."
+        ),
         "tests": [
             "trie finds inserted word",
             "trie returns None when missing",
@@ -38,7 +44,9 @@ TEST_RESPONSES = {
         ],
     },
     "test_levenshtein.py": {
-        "docstring": "Validate Levenshtein distance operations and row calculation helpers.",
+        "docstring": (
+            "Validate Levenshtein distance operations and row calculation helpers."
+        ),
         "tests": [
             "test_distance_for_same_word_is_zero",
             "test_distance_handles_one_insertion",
@@ -51,7 +59,10 @@ TEST_RESPONSES = {
         ],
     },
     "test_validator.py": {
-        "docstring": "Validate empty checks, English words, Vietnamese meanings, menu choices, and dictionary lines.",
+        "docstring": (
+            "Validate empty checks, English words, Vietnamese meanings, menu "
+            "choices, and dictionary lines."
+        ),
         "tests": [
             "empty spaces detected",
             "valid spaces",
@@ -66,7 +77,10 @@ TEST_RESPONSES = {
         ],
     },
     "test_dynamic_array.py": {
-        "docstring": "Validate DynamicArray growth, indexing, updates, removal, conversion, and clearing.",
+        "docstring": (
+            "Validate DynamicArray growth, indexing, updates, removal, "
+            "conversion, and clearing."
+        ),
         "tests": [
             "array starts empty",
             "array grows size",
@@ -79,7 +93,10 @@ TEST_RESPONSES = {
         ],
     },
     "test_history_list.py": {
-        "docstring": "Validate HistoryList count, maximum size trimming, item order, and clearing.",
+        "docstring": (
+            "Validate HistoryList count, maximum size trimming, item order, "
+            "and clearing."
+        ),
         "tests": [
             "history starts empty",
             "history max size",
@@ -88,7 +105,10 @@ TEST_RESPONSES = {
         ],
     },
     "test_favorite_list.py": {
-        "docstring": "Validate FavoriteList add, duplicate handling, contains, count, removal, and missing removal.",
+        "docstring": (
+            "Validate FavoriteList add, duplicate handling, contains, count, "
+            "removal, and missing removal."
+        ),
         "tests": [
             "favorite add succeeds",
             "favorite duplicate rejected",
@@ -100,7 +120,10 @@ TEST_RESPONSES = {
         ],
     },
     "test_file_service.py": {
-        "docstring": "Validate file creation, dictionary/history/favorites loading, saving, and round trips.",
+        "docstring": (
+            "Validate file creation, dictionary/history/favorites loading, "
+            "saving, and round trips."
+        ),
         "tests": [
             "file service creates dictionary",
             "missing dictionary loads empty",
@@ -114,7 +137,10 @@ TEST_RESPONSES = {
         ],
     },
     "test_dictionary_service.py": {
-        "docstring": "Validate DictionaryService add, duplicate rejection, validation, exact and approximate search, favorites, existence, and persistence.",
+        "docstring": (
+            "Validate DictionaryService add, duplicate rejection, validation, "
+            "exact and approximate search, favorites, existence, and persistence."
+        ),
         "tests": [
             "service adds new word",
             "service rejects duplicate word",
@@ -130,7 +156,9 @@ TEST_RESPONSES = {
         ],
     },
     "test_fuzzy_search.py": {
-        "docstring": "Validate FuzzySearch distance thresholds and suggestion behavior.",
+        "docstring": (
+            "Validate FuzzySearch distance thresholds and suggestion behavior."
+        ),
         "tests": [
             "test_get_max_distance_uses_config_thresholds",
             "test_exact_match_is_first_suggestion",
