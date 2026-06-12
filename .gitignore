@@ -1,5 +1,11 @@
 .claude
+.agents/
+.codex/
 .venv/
 __pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright/
 *.pyc
 *.pyo

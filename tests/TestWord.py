@@ -35,6 +35,34 @@ class TestWord(unittest.TestCase):
         self.word.setVietnamese("Tạm biệt")
         self.assertEqual(self.word.getVietnamese(), "Tạm biệt")
 
+    def testGetMeaningList(self):
+        w = Word("book", "quyển sách; đặt chỗ; ghi sổ")
+        self.assertEqual(w.getMeaningList(), ["quyển sách", "đặt chỗ", "ghi sổ"])
+
+    def testAddMeaningSuccess(self):
+        w = Word("book", "quyển sách")
+        self.assertTrue(w.addMeaning("đặt chỗ"))
+        self.assertEqual(w.getVietnamese(), "quyển sách; đặt chỗ")
+
+    def testAddMeaningDuplicateNormalized(self):
+        w = Word("hello", "Xin chào")
+        self.assertFalse(w.addMeaning("  xin   chào  "))
+        self.assertEqual(w.getVietnamese(), "Xin chào")
+
+    def testMergeFromAddsNewMeaningsAndSynonyms(self):
+        existing = Word("book", "quyển sách", "I read a book.", ["volume"])
+        incoming = Word("book", "quyển sách; đặt chỗ", "Book a room.", ["textbook"])
+        self.assertTrue(existing.mergeFrom(incoming))
+        self.assertEqual(existing.getVietnamese(), "quyển sách; đặt chỗ")
+        self.assertEqual(existing.getExample(), "I read a book.")
+        self.assertEqual(existing.getSynonyms(), ["volume", "textbook"])
+
+    def testMergeFromFillsEmptyExample(self):
+        existing = Word("book", "quyển sách", "", [])
+        incoming = Word("book", "đặt chỗ", "Book a room.", [])
+        self.assertTrue(existing.mergeFrom(incoming))
+        self.assertEqual(existing.getExample(), "Book a room.")
+
     def testSetExample(self):
         self.word.setExample("Goodbye!")
         self.assertEqual(self.word.getExample(), "Goodbye!")

@@ -30,8 +30,7 @@ class DictionaryService:
             self.history.clear()
             self.favorites.clear()
             for word in self.fileService.loadDictionary():
-                self.words.add(word)
-                self.trieRoot.insert(word.getEnglish())
+                self.importWordObject(word)
             for item in self.fileService.loadHistory():
                 self.history.add(item)
             for item in self.fileService.loadFavorites():
@@ -76,6 +75,25 @@ class DictionaryService:
             return False
         self.words.add(word)
         self.trieRoot.insert(word.getEnglish())
+        return True
+
+    def importWordObject(self, word):
+        """Import Word object. Từ trùng english sẽ được merge nghĩa/synonyms."""
+        if word is None:
+            return False
+        if not Validation.isEnglishWord(word.getEnglish()):
+            return False
+        if not Validation.isVietnameseMeaning(word.getVietnamese()):
+            return False
+        if not Validation.isValidExample(word.getExample()):
+            return False
+
+        existing = self._findWord(word.getEnglish())
+        if existing is None:
+            self.words.add(word)
+            self.trieRoot.insert(word.getEnglish())
+            return True
+        existing.mergeFrom(word)
         return True
 
     def addWordInteractive(self):

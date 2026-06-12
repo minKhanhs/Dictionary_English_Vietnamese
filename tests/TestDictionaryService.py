@@ -37,6 +37,64 @@ class TestDictionaryService(unittest.TestCase):
         word = Word("hello", "Nghĩa khác", "Example khác", [])
         self.assertFalse(self.service.addWordObject(word))
 
+    def testImportWordNewWord(self):
+        word = Word("computer", "Máy tính", "I use a computer.", [])
+        self.assertTrue(self.service.importWordObject(word))
+        result = self.service.searchExact("computer")
+        self.assertIsNotNone(result)
+        assert result is not None
+        self.assertEqual(result.getVietnamese(), "Máy tính")
+
+    def testImportWordDuplicateMeaningMergesSynonymsOnly(self):
+        word = Word("hello", "  xin   chào  ", "Hi!", ["greeting"])
+        self.assertTrue(self.service.importWordObject(word))
+        result = self.service.searchExact("hello")
+        self.assertIsNotNone(result)
+        assert result is not None
+        self.assertEqual(result.getVietnamese(), "Xin chào")
+        self.assertIn("greeting", result.getSynonyms())
+
+    def testImportWordDifferentMeaningAppendsMeaning(self):
+        word = Word("book", "đặt chỗ", "Book a room.", [])
+        self.assertTrue(self.service.importWordObject(word))
+        result = self.service.searchExact("book")
+        self.assertIsNotNone(result)
+        assert result is not None
+        self.assertEqual(result.getVietnamese(), "Quyển sách; đặt chỗ")
+
+    def testImportWordMultiMeaningSkipsExistingMeaning(self):
+        word = Word("book", "Quyển sách; ghi sổ; đặt chỗ", "Book a room.", [])
+        self.assertTrue(self.service.importWordObject(word))
+        result = self.service.searchExact("book")
+        self.assertIsNotNone(result)
+        assert result is not None
+        self.assertEqual(result.getVietnamese(), "Quyển sách; ghi sổ; đặt chỗ")
+
+    def testLoadDataMergesDuplicateEnglishFromFile(self):
+        class FakeFileService:
+            def loadDictionary(self):
+                return [
+                    Word("book", "quyển sách", "I read a book.", ["volume"]),
+                    Word("book", "quyển sách; đặt chỗ", "Book a room.", ["textbook"]),
+                    Word("run", "chạy; vận hành", "They run a company.", []),
+                ]
+
+            def loadHistory(self):
+                return []
+
+            def loadFavorites(self):
+                return []
+
+        service = DictionaryService(FakeFileService())
+        service.loadData()
+        result = service.searchExact("book")
+        self.assertIsNotNone(result)
+        assert result is not None
+        self.assertEqual(service.words.size(), 2)
+        self.assertEqual(result.getVietnamese(), "quyển sách; đặt chỗ")
+        self.assertEqual(result.getExample(), "I read a book.")
+        self.assertEqual(result.getSynonyms(), ["volume", "textbook"])
+
     def testAddWordEmptyEnglish(self):
         self.assertFalse(self.service.addWordObject(Word("", "Nghĩa", "Ví dụ", [])))
 
