@@ -1,0 +1,38 @@
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "UP",
+    "SIM",
+]
+ignore = []
+
+[tool.basedpyright]
+include = [
+    "algorithms",
+    "config",
+    "models",
+    "services",
+    "structures",
+    "tests",
+    "ui",
+    "utils",
+    "validate",
+    "main.py",
+]
+exclude = [
+    "**/__pycache__",
+    ".git",
+    ".claude",
+    ".agents",
+    ".codex",
+    "validation",
+]
+pythonVersion = "3.14"
+typeCheckingMode = "basic"
