@@ -15,3 +15,13 @@ class StringUtils:
     @staticmethod
     def removeExtraSpaces(text: str) -> str:
         return " ".join(text.split())
+
+    @staticmethod
+    def splitAndClean(text: str, separator: str) -> List[str]:
+        if not text:
+            return []
+        return [
+            item.strip()
+            for item in str(text).split(separator)
+            if item.strip()
+        ]

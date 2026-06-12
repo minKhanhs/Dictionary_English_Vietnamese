@@ -102,11 +102,7 @@ class Word:
     def _splitMeanings(vietnamese):
         if not vietnamese:
             return []
-        return [
-            item.strip()
-            for item in str(vietnamese).split(AppConfig.MEANING_SEPARATOR)
-            if item.strip()
-        ]
+        return StringUtils.splitAndClean(vietnamese, AppConfig.MEANING_SEPARATOR)
 
     @staticmethod
     def _sanitize(text):
@@ -145,9 +141,5 @@ class Word:
         parts = str(line).rstrip("\n").split(AppConfig.FIELD_SEPARATOR)
         synonyms = []
         if len(parts) > 3 and parts[3].strip():
-            synonyms = [
-                item.strip()
-                for item in parts[3].split(AppConfig.LIST_SEPARATOR)
-                if item.strip()
-            ]
+            synonyms = StringUtils.splitAndClean(parts[3], AppConfig.LIST_SEPARATOR)
         return Word(parts[0], parts[1], parts[2], synonyms)

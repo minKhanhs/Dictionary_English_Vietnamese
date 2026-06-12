@@ -1,6 +1,7 @@
 from config.AppConfig import AppConfig
 from config.ResponseCode import ResponseCode
 from structures.Word import Word
+from utils.StringUtils import StringUtils
 
 
 class MenuHandler:
@@ -18,11 +19,7 @@ class MenuHandler:
         )
         synonyms = []
         if synonymsInput and synonymsInput.strip():
-            synonyms = [
-                item.strip()
-                for item in synonymsInput.split(AppConfig.LIST_SEPARATOR)
-                if item.strip()
-            ]
+            synonyms = StringUtils.splitAndClean(synonymsInput, AppConfig.LIST_SEPARATOR)
         word = Word(english, vietnamese, example, synonyms)
         if self.dictionaryService.addWordObject(word):
             print(f"[{ResponseCode.SUCCESS}] Đã thêm từ thành công.")
