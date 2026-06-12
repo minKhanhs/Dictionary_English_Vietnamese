@@ -75,5 +75,8 @@ class Menu:
             except KeyboardInterrupt:
                 print(f"\n[{ResponseCode.CANCELLED}] Đã dừng bởi người dùng.")
                 break
+            except EOFError:
+                print(f"\n[{ResponseCode.CANCELLED}] Ngắt luồng nhập dữ liệu (EOF). Thoát chương trình.")
+                break
             except Exception as e:
                 print(f"[{ResponseCode.ERROR}] Lỗi xử lý menu: {e}")

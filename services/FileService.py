@@ -25,9 +25,9 @@ class FileService:
 
     def loadDictionary(self):
         """Đọc từ điển từ file, bỏ qua dòng sai định dạng."""
-        self.ensureDataFiles()
         words = []
         try:
+            self.ensureDataFiles()
             with open(AppConfig.DICTIONARY_FILE, encoding="utf-8") as f:
                 for line in f:
                     word = Word.fromFileLine(line)
@@ -36,11 +36,13 @@ class FileService:
             print(f"[{ResponseCode.SUCCESS}] loadDictionary")
         except OSError as e:
             print(f"[{ResponseCode.FILE_ERROR}] Không thể đọc file từ điển: {e}")
+        except Exception as e:
+            print(f"[{ResponseCode.ERROR}] Lỗi không xác định khi đọc từ điển: {e}")
         return words
 
     def saveDictionary(self, wordsList):
-        self.ensureDataFiles()
         try:
+            self.ensureDataFiles()
             with open(AppConfig.DICTIONARY_FILE, "w", encoding="utf-8") as f:
                 for word in wordsList:
                     f.write(word.toFileLine() + "\n")
@@ -48,6 +50,9 @@ class FileService:
             return True
         except OSError as e:
             print(f"[{ResponseCode.FILE_ERROR}] Không thể ghi file từ điển: {e}")
+            return False
+        except Exception as e:
+            print(f"[{ResponseCode.ERROR}] Lỗi không xác định khi ghi từ điển: {e}")
             return False
 
     def loadHistory(self):
@@ -63,9 +68,9 @@ class FileService:
         return self._saveSimpleFile(AppConfig.FAVORITES_FILE, favoritesObj)
 
     def _loadSimpleFile(self, path):
-        self.ensureDataFiles()
         items = []
         try:
+            self.ensureDataFiles()
             with open(path, encoding="utf-8") as f:
                 for line in f:
                     normalized = StringUtils.normalizeWord(line)
@@ -74,12 +79,14 @@ class FileService:
             print(f"[{ResponseCode.SUCCESS}] _loadSimpleFile({path})")
         except OSError as e:
             print(f"[{ResponseCode.FILE_ERROR}] Không thể đọc file {path}: {e}")
+        except Exception as e:
+            print(f"[{ResponseCode.ERROR}] Lỗi không xác định khi đọc file {path}: {e}")
         return items
 
     def _saveSimpleFile(self, path, values):
-        self.ensureDataFiles()
         items = values.toList() if hasattr(values, "toList") else values
         try:
+            self.ensureDataFiles()
             with open(path, "w", encoding="utf-8") as f:
                 for item in items:
                     normalized = StringUtils.normalizeWord(item)
@@ -89,4 +96,7 @@ class FileService:
             return True
         except OSError as e:
             print(f"[{ResponseCode.FILE_ERROR}] Không thể ghi file {path}: {e}")
+            return False
+        except Exception as e:
+            print(f"[{ResponseCode.ERROR}] Lỗi không xác định khi ghi file {path}: {e}")
             return False
