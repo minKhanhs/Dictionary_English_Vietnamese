@@ -16,14 +16,14 @@ class TestArrayList(unittest.TestCase):
         self.assertEqual(self.arr.get(1), "world")
 
     def testPushBackAlias(self):
-        self.arr.push_back("hello")
+        self.arr.add("hello")
         self.assertEqual(self.arr.get(0), "hello")
-        self.assertEqual(self.arr.get_size(), 1)
+        self.assertEqual(self.arr.getSize(), 1)
 
     def testAddMultiple(self):
         for i in range(15):
             self.arr.add(i)
-        self.assertEqual(self.arr.size(), 15)
+        self.assertEqual(self.arr.getSize(), 15)
         self.assertEqual(self.arr.get(14), 14)
 
     def testGetOutOfBounds(self):
@@ -34,21 +34,21 @@ class TestArrayList(unittest.TestCase):
             self.arr.get(1)
 
     def testSizeEmpty(self):
-        self.assertEqual(self.arr.size(), 0)
+        self.assertEqual(self.arr.getSize(), 0)
 
     def testSizeAfterAdd(self):
         self.arr.add("a")
         self.arr.add("b")
-        self.assertEqual(self.arr.size(), 2)
-        self.assertEqual(self.arr.get_size(), 2)
+        self.assertEqual(self.arr.getSize(), 2)
+        self.assertEqual(self.arr.getSize(), 2)
 
     def testRemoveMiddle(self):
         self.arr.add("a")
         self.arr.add("b")
         self.arr.add("c")
-        removed = self.arr.remove_at(1)
+        removed = self.arr.remove(1)
         self.assertEqual(removed, "b")
-        self.assertEqual(self.arr.size(), 2)
+        self.assertEqual(self.arr.getSize(), 2)
         self.assertEqual(self.arr.get(0), "a")
         self.assertEqual(self.arr.get(1), "c")
 
@@ -56,7 +56,7 @@ class TestArrayList(unittest.TestCase):
         self.arr.add("a")
         self.arr.add("b")
         self.arr.remove(1)
-        self.assertEqual(self.arr.size(), 1)
+        self.assertEqual(self.arr.getSize(), 1)
         self.assertEqual(self.arr.get(0), "a")
 
     def testRemoveOutOfBounds(self):
@@ -77,7 +77,7 @@ class TestArrayList(unittest.TestCase):
     def testToString(self):
         self.arr.add("a")
         self.arr.add("b")
-        self.assertIn("a", self.arr.toString())
+        self.assertIn("a", str(self.arr.toList()))
 
     def testSet(self):
         self.arr.add("a")
@@ -86,16 +86,16 @@ class TestArrayList(unittest.TestCase):
 
     def testClearAndIsEmpty(self):
         self.arr.add("a")
-        self.assertFalse(self.arr.is_empty())
+        self.assertFalse(self.arr.isEmpty())
         self.arr.clear()
-        self.assertTrue(self.arr.is_empty())
-        self.assertEqual(self.arr.get_size(), 0)
+        self.assertTrue(self.arr.isEmpty())
+        self.assertEqual(self.arr.getSize(), 0)
 
     def testToListReturnsCopy(self):
         self.arr.add("a")
-        result = self.arr.to_list()
+        result = self.arr.toList()
         result.append("b")
-        self.assertEqual(self.arr.get_size(), 1)
+        self.assertEqual(self.arr.getSize(), 1)
 
     def testPublicCapacityAndData(self):
         self.assertEqual(self.arr.capacity, 10)
@@ -108,13 +108,13 @@ class TestArrayList(unittest.TestCase):
     def testResize(self):
         for i in range(20):
             self.arr.add(i)
-        self.assertEqual(self.arr.size(), 20)
+        self.assertEqual(self.arr.getSize(), 20)
         for i in range(20):
             self.assertEqual(self.arr.get(i), i)
 
     def testDynamicArrayAlias(self):
         arr = DynamicArray()
-        arr.push_back("hello")
+        arr.add("hello")
         self.assertEqual(arr.get(0), "hello")
 
 

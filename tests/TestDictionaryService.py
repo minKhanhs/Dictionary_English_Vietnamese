@@ -90,7 +90,7 @@ class TestDictionaryService(unittest.TestCase):
         result = service.searchExact("book")
         self.assertIsNotNone(result)
         assert result is not None
-        self.assertEqual(service.words.size(), 2)
+        self.assertEqual(service.words.getSize(), 2)
         self.assertEqual(result.getVietnamese(), "quyển sách; đặt chỗ")
         self.assertEqual(result.getExample(), "I read a book.")
         self.assertEqual(result.getSynonyms(), ["volume", "textbook"])
@@ -208,13 +208,13 @@ class TestDictionaryService(unittest.TestCase):
     # --- DISPLAY (no crash) ---
 
     def testDisplayAllWordsNoCrash(self):
-        self.service.displayAllWords()
+        self.service.getAllWords()
 
     def testShowHistoryNoCrash(self):
-        self.service.showHistory()
+        self.service.getHistory().display()
 
     def testShowFavoritesNoCrash(self):
-        self.service.showFavorites()
+        self.service.getFavorites().display()
 
 
 if __name__ == "__main__":

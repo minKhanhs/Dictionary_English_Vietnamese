@@ -3,7 +3,7 @@ import unittest
 from algorithms.FuzzySearch import FuzzySearch
 from algorithms.Levenshtein import Levenshtein
 from config.AppConfig import AppConfig
-from structures.Trie import TrieNode
+from structures.Trie import Trie
 
 
 class TestLevenshtein(unittest.TestCase):
@@ -12,7 +12,6 @@ class TestLevenshtein(unittest.TestCase):
     """
 
     def setUp(self):
-        # Thiết lập trước mỗi test case
         self.targetWord = "cat"
         self.lev = Levenshtein(self.targetWord)
 
@@ -46,8 +45,7 @@ class TestFuzzySearch(unittest.TestCase):
     """
 
     def setUp(self):
-        # 1. Khởi tạo cây Trie giả lập
-        self.trieRoot = TrieNode()
+        self.trie = Trie()
         self.dictionaryWords = [
             "hello",
             "hell",
@@ -60,10 +58,9 @@ class TestFuzzySearch(unittest.TestCase):
             "car",
         ]
         for word in self.dictionaryWords:
-            self.trieRoot.insert(word)
+            self.trie.insert(word)
 
-        # 2. Khởi tạo bộ tìm kiếm
-        self.matcher = FuzzySearch(self.trieRoot)
+        self.matcher = FuzzySearch(self.trie.root)
 
     def testGetMaxDistanceLogic(self):
         # Kiểm tra xem hàm lấy ngưỡng có tuân thủ đúng AppConfig không

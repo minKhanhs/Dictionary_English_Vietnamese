@@ -2,8 +2,6 @@ from config.AppConfig import AppConfig
 
 
 class TrieNode:
-    """Node trong cây Trie."""
-
     def __init__(self):
         self.children = {}
         self.isEndOfWord = False

@@ -21,7 +21,6 @@ class DictionaryService:
         self.fileService = fileService or FileService()
 
     def loadData(self):
-        """Tải dữ liệu từ file vào bộ nhớ."""
         self.trie = Trie()
         self.words = ArrayList()
         self.history.clear()
@@ -56,7 +55,7 @@ class DictionaryService:
         if self.wordExists(word.getEnglish()):
             return False
         self.words.add(word)
-        self.trie.insert(word.getEnglish())
+        self.trie.insert(word.getEnglish(), word)
         return True
 
     def importWordObject(self, word):
@@ -73,7 +72,7 @@ class DictionaryService:
         existing = self._findWord(word.getEnglish())
         if existing is None:
             self.words.add(word)
-            self.trie.insert(word.getEnglish())
+            self.trie.insert(word.getEnglish(), word)
             return True
         existing.mergeFrom(word)
         return True
@@ -157,13 +156,9 @@ class DictionaryService:
 
     def _findWord(self, english):
         normalized = StringUtils.normalizeWord(english) if english else ""
-        for i in range(self.words.getSize()):
-            w = self.words.get(i)
-            if w is None:
-                continue
-            if w.getEnglish() == normalized:
-                return w
-        return None
+        if not normalized:
+            return None
+        return self.trie.searchData(normalized)
 
     def _rebuildTrie(self):
         self.trie = Trie()
@@ -171,5 +166,5 @@ class DictionaryService:
             w = self.words.get(i)
             if w is None:
                 continue
-            self.trie.insert(w.getEnglish())
+            self.trie.insert(w.getEnglish(), w)
         self.fuzzySearch = FuzzySearch(self.trie.root)
