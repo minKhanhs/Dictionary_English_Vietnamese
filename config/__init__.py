@@ -1,6 +1,6 @@
-from config.ResponseCode import (
+from config.ResponseCode import ResponseCode
+from config.TestResponses import (
     TEST_RESPONSES,
-    ResponseCode,
     get_test_response,
     list_test_files,
 )
