@@ -6,6 +6,8 @@ from validate.Validation import Validation
 class Word:
     """Từ điển entry: english, vietnamese, example, synonyms."""
 
+    MEANING_SEPARATOR = ";"
+
     def __init__(self, english="", vietnamese="", example="", synonyms=None):
         self.english = StringUtils.normalizeWord(english) if english else ""
         self.vietnamese = str(vietnamese).strip() if vietnamese else ""
@@ -36,6 +38,43 @@ class Word:
     def setVietnamese(self, vietnamese):
         self.vietnamese = str(vietnamese).strip() if vietnamese else ""
 
+    def getMeaningList(self):
+        return self._splitMeanings(self.vietnamese)
+
+    def hasMeaning(self, meaning):
+        normalized = self._normalizeMeaning(meaning)
+        if not normalized:
+            return False
+        return normalized in {
+            self._normalizeMeaning(item) for item in self.getMeaningList()
+        }
+
+    def addMeaning(self, meaning):
+        clean = str(meaning).strip() if meaning else ""
+        if not Validation.isVietnameseMeaning(clean):
+            return False
+        if self.hasMeaning(clean):
+            return False
+        meanings = self.getMeaningList()
+        meanings.append(clean)
+        self.vietnamese = f"{self.MEANING_SEPARATOR} ".join(meanings)
+        return True
+
+    def mergeFrom(self, other):
+        if other is None or self.getEnglish() != other.getEnglish():
+            return False
+        changed = False
+        for meaning in other.getMeaningList():
+            if self.addMeaning(meaning):
+                changed = True
+        if not self.example and other.getExample():
+            self.example = other.getExample()
+            changed = True
+        for synonym in other.getSynonyms():
+            if self.addSynonym(synonym):
+                changed = True
+        return changed
+
     def setExample(self, example):
         self.example = str(example).strip() if example else ""
 
@@ -54,6 +93,22 @@ class Word:
     def hasSynonym(self, synonym):
         normalized = StringUtils.normalizeWord(synonym) if synonym else ""
         return normalized in self.synonyms
+
+    @staticmethod
+    def _normalizeMeaning(meaning):
+        if not meaning:
+            return ""
+        return StringUtils.removeExtraSpaces(str(meaning).strip()).lower()
+
+    @staticmethod
+    def _splitMeanings(vietnamese):
+        if not vietnamese:
+            return []
+        return [
+            item.strip()
+            for item in str(vietnamese).split(Word.MEANING_SEPARATOR)
+            if item.strip()
+        ]
 
     def display(self):
         print("English:", self.english)
