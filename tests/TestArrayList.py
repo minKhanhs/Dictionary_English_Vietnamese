@@ -1,6 +1,6 @@
 import unittest
 
-from structures.ArrayList import ArrayList
+from structures.ArrayList import ArrayList, DynamicArray
 
 
 class TestArrayList(unittest.TestCase):
@@ -14,6 +14,11 @@ class TestArrayList(unittest.TestCase):
         self.arr.add("world")
         self.assertEqual(self.arr.get(0), "hello")
         self.assertEqual(self.arr.get(1), "world")
+
+    def testPushBackAlias(self):
+        self.arr.push_back("hello")
+        self.assertEqual(self.arr.get(0), "hello")
+        self.assertEqual(self.arr.get_size(), 1)
 
     def testAddMultiple(self):
         for i in range(15):
@@ -35,12 +40,14 @@ class TestArrayList(unittest.TestCase):
         self.arr.add("a")
         self.arr.add("b")
         self.assertEqual(self.arr.size(), 2)
+        self.assertEqual(self.arr.get_size(), 2)
 
     def testRemoveMiddle(self):
         self.arr.add("a")
         self.arr.add("b")
         self.arr.add("c")
-        self.arr.remove(1)
+        removed = self.arr.remove_at(1)
+        self.assertEqual(removed, "b")
         self.assertEqual(self.arr.size(), 2)
         self.assertEqual(self.arr.get(0), "a")
         self.assertEqual(self.arr.get(1), "c")
@@ -72,6 +79,28 @@ class TestArrayList(unittest.TestCase):
         self.arr.add("b")
         self.assertIn("a", self.arr.toString())
 
+    def testSet(self):
+        self.arr.add("a")
+        self.arr.set(0, "b")
+        self.assertEqual(self.arr.get(0), "b")
+
+    def testClearAndIsEmpty(self):
+        self.arr.add("a")
+        self.assertFalse(self.arr.is_empty())
+        self.arr.clear()
+        self.assertTrue(self.arr.is_empty())
+        self.assertEqual(self.arr.get_size(), 0)
+
+    def testToListReturnsCopy(self):
+        self.arr.add("a")
+        result = self.arr.to_list()
+        result.append("b")
+        self.assertEqual(self.arr.get_size(), 1)
+
+    def testPublicCapacityAndData(self):
+        self.assertEqual(self.arr.capacity, 10)
+        self.assertEqual(len(self.arr.data), self.arr.capacity)
+
     def testAddNone(self):
         self.arr.add(None)
         self.assertIsNone(self.arr.get(0))
@@ -82,6 +111,11 @@ class TestArrayList(unittest.TestCase):
         self.assertEqual(self.arr.size(), 20)
         for i in range(20):
             self.assertEqual(self.arr.get(i), i)
+
+    def testDynamicArrayAlias(self):
+        arr = DynamicArray()
+        arr.push_back("hello")
+        self.assertEqual(arr.get(0), "hello")
 
 
 if __name__ == "__main__":
