@@ -1,5 +1,6 @@
 from config.ResponseCode import ResponseCode
 from services.DictionaryService import DictionaryService
+from ui.MenuHandler import MenuHandler
 from validate.Validation import Validation
 
 
@@ -8,6 +9,7 @@ class Menu:
 
     def __init__(self, dictionaryService=None):
         self.dictionaryService = dictionaryService or DictionaryService()
+        self.handler = MenuHandler(self.dictionaryService)
 
     def showMainMenu(self):
         print("\n===== TỪ ĐIỂN ANH - VIỆT =====")
@@ -34,6 +36,7 @@ class Menu:
     def run(self):
         try:
             self.dictionaryService.loadData()
+            print(f"{ResponseCode.PASS_LABEL} loadData")
         except Exception as e:
             print(f"{ResponseCode.FAIL_LABEL} loadData: {e}")
         while True:
@@ -41,30 +44,30 @@ class Menu:
                 self.showMainMenu()
                 choice = self.inputChoice()
                 if choice == 1:
-                    self.dictionaryService.addWordInteractive()
+                    self.handler.addWord()
                 elif choice == 2:
-                    self.dictionaryService.addSynonymInteractive()
+                    self.handler.addSynonym()
                 elif choice == 3:
-                    self.dictionaryService.searchExactInteractive()
+                    self.handler.searchExact()
                 elif choice == 4:
-                    self.dictionaryService.searchApproximateInteractive()
+                    self.handler.searchApproximate()
                 elif choice == 5:
-                    self.dictionaryService.showHistory()
+                    self.handler.showHistory()
                 elif choice == 6:
-                    self.dictionaryService.addFavoriteInteractive()
+                    self.handler.addFavorite()
                 elif choice == 7:
-                    self.dictionaryService.removeFavoriteInteractive()
+                    self.handler.removeFavorite()
                 elif choice == 8:
-                    self.dictionaryService.showFavorites()
+                    self.handler.showFavorites()
                 elif choice == 9:
-                    self.dictionaryService.displayAllWords()
+                    self.handler.displayAllWords()
                 elif choice == 10:
                     if self.dictionaryService.saveData():
-                        print("Đã lưu dữ liệu.")
+                        print(f"{ResponseCode.PASS_LABEL} Đã lưu dữ liệu.")
                     else:
-                        print("Lưu dữ liệu thất bại.")
+                        print(f"{ResponseCode.FAIL_LABEL} Lưu dữ liệu thất bại.")
                 elif choice == 11:
-                    self.dictionaryService.deleteWordInteractive()
+                    self.handler.deleteWord()
                 elif choice == 0:
                     self.dictionaryService.saveData()
                     print("Tạm biệt!")

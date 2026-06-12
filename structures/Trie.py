@@ -9,31 +9,6 @@ class TrieNode:
         self.isEndOfWord = False
         self.wordData = None
 
-    def insert(self, word):
-        return Trie(self).insert(word)
-
-    def search(self, word):
-        return Trie(self).search(word)
-
-    def startsWith(self, prefix):
-        return Trie(self).starts_with(prefix)
-
-    @property
-    def is_end_of_word(self):
-        return self.isEndOfWord
-
-    @is_end_of_word.setter
-    def is_end_of_word(self, value):
-        self.isEndOfWord = value
-
-    @property
-    def word_data(self):
-        return self.wordData
-
-    @word_data.setter
-    def word_data(self, value):
-        self.wordData = value
-
 
 class Trie:
     """Trie cho tra cứu chính xác từ tiếng Anh a-z."""
@@ -42,7 +17,7 @@ class Trie:
         self.root = root or TrieNode()
 
     def insert(self, word, word_data=None):
-        if not word or not self._is_valid_word(word):
+        if not word or not self._isValidWord(word):
             return False
         node = self.root
         for char in word:
@@ -54,7 +29,7 @@ class Trie:
         return True
 
     def search(self, english):
-        if not english or not self._is_valid_word(english):
+        if not english or not self._isValidWord(english):
             return False
         node = self.root
         for char in english:
@@ -63,8 +38,8 @@ class Trie:
             node = node.children[char]
         return node.isEndOfWord
 
-    def search_data(self, english):
-        if not english or not self._is_valid_word(english):
+    def searchData(self, english):
+        if not english or not self._isValidWord(english):
             return None
         node = self.root
         for char in english:
@@ -75,8 +50,8 @@ class Trie:
             return None
         return node.wordData
 
-    def starts_with(self, prefix):
-        if prefix is None or not self._is_valid_word(prefix):
+    def startsWith(self, prefix):
+        if prefix is None or not self._isValidWord(prefix):
             return False
         node = self.root
         for char in prefix:
@@ -85,20 +60,17 @@ class Trie:
             node = node.children[char]
         return True
 
-    def startsWith(self, prefix):
-        return self.starts_with(prefix)
-
-    def _get_index(self, char):
-        if not self._is_valid_char(char):
+    def _getIndex(self, char):
+        if not self._isValidChar(char):
             return -1
         return ord(char) - ord(AppConfig.FIRST_CHAR)
 
-    def _is_valid_char(self, char):
+    def _isValidChar(self, char):
         return (
             isinstance(char, str)
             and len(char) == 1
             and AppConfig.FIRST_CHAR <= char <= AppConfig.LAST_CHAR
         )
 
-    def _is_valid_word(self, word):
-        return isinstance(word, str) and all(self._is_valid_char(char) for char in word)
+    def _isValidWord(self, word):
+        return isinstance(word, str) and all(self._isValidChar(char) for char in word)

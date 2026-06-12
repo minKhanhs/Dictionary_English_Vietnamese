@@ -14,7 +14,7 @@ class HistoryList:
         if not normalized:
             return False
         self.items.append(normalized)
-        if len(self.items) > AppConfig.MAX_HISTORY_SIZE:
+        while len(self.items) > AppConfig.MAX_HISTORY_SIZE:
             self.items.pop(0)
         self.count = len(self.items)
         return True

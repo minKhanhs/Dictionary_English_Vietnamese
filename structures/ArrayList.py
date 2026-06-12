@@ -6,22 +6,6 @@ class ArrayList:
         self.capacity = 10
         self.data = [None] * self.capacity
 
-    @property
-    def _capacity(self):
-        return self.capacity
-
-    @_capacity.setter
-    def _capacity(self, value):
-        self.capacity = value
-
-    @property
-    def _array(self):
-        return self.data
-
-    @_array.setter
-    def _array(self, value):
-        self.data = value
-
     def _resize(self, new_capacity):
         new_array = [None] * new_capacity
         for i in range(self._size):
@@ -29,7 +13,7 @@ class ArrayList:
         self.data = new_array
         self.capacity = new_capacity
 
-    def push_back(self, item):
+    def add(self, item):
         if self._size == self.capacity:
             self._resize(self.capacity * 2)
         self.data[self._size] = item
@@ -45,7 +29,7 @@ class ArrayList:
             raise IndexError("Index out of bounds")
         self.data[index] = item
 
-    def remove_at(self, index):
+    def remove(self, index):
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         removed = self.data[index]
@@ -57,10 +41,10 @@ class ArrayList:
             self._resize(max(10, self.capacity // 2))
         return removed
 
-    def get_size(self):
+    def getSize(self):
         return self._size
 
-    def is_empty(self):
+    def isEmpty(self):
         return self._size == 0
 
     def clear(self):
@@ -68,23 +52,11 @@ class ArrayList:
         self.capacity = 10
         self.data = [None] * self.capacity
 
-    def to_list(self):
+    def toList(self):
         return [self.data[i] for i in range(self._size)]
 
     def contains(self, item):
         return any(self.data[i] == item for i in range(self._size))
-
-    def add(self, item):
-        self.push_back(item)
-
-    def remove(self, index):
-        self.remove_at(index)
-
-    def size(self):
-        return self.get_size()
-
-    def toString(self):
-        return str(self.to_list())
 
 
 DynamicArray = ArrayList

@@ -1,6 +1,8 @@
+from typing import List, Any
+
 class StringUtils:
     @staticmethod
-    def join(items, separator):
+    def join(items: List[Any], separator: str) -> str:
         if not items:
             return ""
         return separator.join(str(item) for item in items)

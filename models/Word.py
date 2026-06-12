@@ -6,8 +6,6 @@ from validate.Validation import Validation
 class Word:
     """Từ điển entry: english, vietnamese, example, synonyms."""
 
-    MEANING_SEPARATOR = ";"
-
     def __init__(self, english="", vietnamese="", example="", synonyms=None):
         self.english = StringUtils.normalizeWord(english) if english else ""
         self.vietnamese = str(vietnamese).strip() if vietnamese else ""
@@ -57,7 +55,7 @@ class Word:
             return False
         meanings = self.getMeaningList()
         meanings.append(clean)
-        self.vietnamese = f"{self.MEANING_SEPARATOR} ".join(meanings)
+        self.vietnamese = f"{AppConfig.MEANING_SEPARATOR} ".join(meanings)
         return True
 
     def mergeFrom(self, other):
@@ -106,7 +104,7 @@ class Word:
             return []
         return [
             item.strip()
-            for item in str(vietnamese).split(Word.MEANING_SEPARATOR)
+            for item in str(vietnamese).split(AppConfig.MEANING_SEPARATOR)
             if item.strip()
         ]
 

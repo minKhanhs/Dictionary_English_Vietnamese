@@ -26,6 +26,7 @@ class AppConfig:
     # Định dạng dữ liệu file
     FIELD_SEPARATOR = "|"
     LIST_SEPARATOR = ","
+    MEANING_SEPARATOR = ";"
     DICTIONARY_FILE_FIELD_COUNT = 4
 
     # Giới hạn độ dài dữ liệu để validation
