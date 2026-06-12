@@ -61,6 +61,7 @@ class TestDictionaryService(unittest.TestCase):
     def testSearchExactFound(self):
         result = self.service.searchExact("hello")
         self.assertIsNotNone(result)
+        assert result is not None
         self.assertEqual(result.getEnglish(), "hello")
         self.assertEqual(result.getVietnamese(), "Xin chào")
 
@@ -99,6 +100,7 @@ class TestDictionaryService(unittest.TestCase):
     def testAddSynonymViaWord(self):
         word = self.service.searchExact("book")
         self.assertIsNotNone(word)
+        assert word is not None
         self.assertTrue(word.addSynonym("volume"))
         self.assertTrue(word.hasSynonym("volume"))
 

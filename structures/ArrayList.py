@@ -1,4 +1,5 @@
-#Cấu trúc ArrayList
+# Cấu trúc ArrayList
+
 
 class ArrayList:
     def __init__(self):
@@ -35,10 +36,7 @@ class ArrayList:
             self._resize(self._capacity // 2)
 
     def contains(self, item):
-        for i in range(self._size):
-            if self._array[i] == item:
-                return True
-        return False
+        return any(self._array[i] == item for i in range(self._size))
 
     def size(self):
         return self._size

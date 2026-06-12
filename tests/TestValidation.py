@@ -1,10 +1,4 @@
 import unittest
-import sys
-import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
 
 from config.AppConfig import AppConfig
 from validate.Validation import Validation
@@ -90,14 +84,18 @@ class TestValidation(unittest.TestCase):
         self.assertTrue(Validation.hasEnoughFields(line, AppConfig.FIELD_SEPARATOR, 4))
 
     def testHasEnoughFieldsShort(self):
-        self.assertFalse(Validation.hasEnoughFields("hello|xin chào", AppConfig.FIELD_SEPARATOR, 4))
+        self.assertFalse(
+            Validation.hasEnoughFields("hello|xin chào", AppConfig.FIELD_SEPARATOR, 4)
+        )
 
     def testHasEnoughFieldsEmpty(self):
         self.assertFalse(Validation.hasEnoughFields("", AppConfig.FIELD_SEPARATOR, 4))
         self.assertFalse(Validation.hasEnoughFields(None, AppConfig.FIELD_SEPARATOR, 4))
 
     def testValidDictionaryEntry(self):
-        self.assertTrue(Validation.isValidDictionaryEntry("hello|Xin chào|Hello!|hi,hey"))
+        self.assertTrue(
+            Validation.isValidDictionaryEntry("hello|Xin chào|Hello!|hi,hey")
+        )
         self.assertTrue(Validation.isValidDictionaryEntry("hello|Xin chào|Hello!|"))
 
     def testInvalidDictionaryEntry(self):

@@ -64,12 +64,14 @@ class Word:
             print("Synonyms:", StringUtils.join(self.synonyms, ", "))
 
     def toFileLine(self):
-        return AppConfig.FIELD_SEPARATOR.join([
-            self.english,
-            self.vietnamese,
-            self.example,
-            StringUtils.join(self.synonyms, AppConfig.LIST_SEPARATOR),
-        ])
+        return AppConfig.FIELD_SEPARATOR.join(
+            [
+                self.english,
+                self.vietnamese,
+                self.example,
+                StringUtils.join(self.synonyms, AppConfig.LIST_SEPARATOR),
+            ]
+        )
 
     @staticmethod
     def fromFileLine(line):

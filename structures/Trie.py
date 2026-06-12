@@ -1,6 +1,7 @@
 # Cấu trúc dữ liệu TrieNode
 # Để lưu từ vựng
 
+
 class TrieNode:
     def __init__(self):
         self.children = {}
@@ -21,7 +22,7 @@ class TrieNode:
                 return False
             node = node.children[char]
         return node.isEndOfWord
-    
+
     def startsWith(self, prefix):
         node = self
         for char in prefix:
@@ -29,6 +30,3 @@ class TrieNode:
                 return False
             node = node.children[char]
         return True
-    
-    
-    

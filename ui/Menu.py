@@ -1,4 +1,3 @@
-from config.AppConfig import AppConfig
 from config.ResponseCode import ResponseCode
 from services.DictionaryService import DictionaryService
 from validate.Validation import Validation

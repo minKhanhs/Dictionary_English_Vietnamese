@@ -1,10 +1,5 @@
-import os
-import sys
 import unittest
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
 from algorithms.FuzzySearch import FuzzySearch
 from algorithms.Levenshtein import Levenshtein
 from config.AppConfig import AppConfig

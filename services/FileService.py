@@ -13,7 +13,12 @@ class FileService:
         folder = os.path.dirname(AppConfig.DICTIONARY_FILE)
         if folder:
             os.makedirs(folder, exist_ok=True)
-        for path in (AppConfig.DICTIONARY_FILE, AppConfig.HISTORY_FILE, AppConfig.FAVORITES_FILE):
+        data_paths = (
+            AppConfig.DICTIONARY_FILE,
+            AppConfig.HISTORY_FILE,
+            AppConfig.FAVORITES_FILE,
+        )
+        for path in data_paths:
             if not os.path.exists(path):
                 with open(path, "w", encoding="utf-8"):
                     pass
@@ -23,7 +28,7 @@ class FileService:
         self.ensureDataFiles()
         words = []
         try:
-            with open(AppConfig.DICTIONARY_FILE, "r", encoding="utf-8") as f:
+            with open(AppConfig.DICTIONARY_FILE, encoding="utf-8") as f:
                 for line in f:
                     word = Word.fromFileLine(line)
                     if word is not None:
@@ -61,7 +66,7 @@ class FileService:
         self.ensureDataFiles()
         items = []
         try:
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 for line in f:
                     normalized = StringUtils.normalizeWord(line)
                     if normalized:
