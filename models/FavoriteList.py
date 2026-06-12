@@ -1,3 +1,4 @@
+from config.ResponseCode import ResponseCode
 from utils.StringUtils import StringUtils
 
 
@@ -27,7 +28,7 @@ class FavoriteList:
 
     def display(self):
         if not self.favorites:
-            print("Danh sách yêu thích trống.")
+            print(f"[{ResponseCode.EMPTY}] Danh sách yêu thích trống.")
             return
         for index, item in enumerate(self.favorites, start=1):
             print(f"{index}. {item}")

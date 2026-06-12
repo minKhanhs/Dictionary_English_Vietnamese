@@ -31,14 +31,14 @@ class Menu:
             choice = input("Chọn chức năng: ")
             if Validation.isValidMenuOption(choice):
                 return int(choice)
-            print("Lựa chọn không hợp lệ. Vui lòng nhập số từ 0 đến 11.")
+            print(f"[{ResponseCode.INPUT_INVALID}] Lựa chọn không hợp lệ. Vui lòng nhập số từ 0 đến 11.")
 
     def run(self):
         try:
             self.dictionaryService.loadData()
-            print(f"{ResponseCode.PASS_LABEL} loadData")
+            print(f"[{ResponseCode.SUCCESS}] Đã tải dữ liệu thành công.")
         except Exception as e:
-            print(f"{ResponseCode.FAIL_LABEL} loadData: {e}")
+            print(f"[{ResponseCode.ERROR}] Lỗi tải dữ liệu: {e}")
         while True:
             try:
                 self.showMainMenu()
@@ -63,17 +63,17 @@ class Menu:
                     self.handler.displayAllWords()
                 elif choice == 10:
                     if self.dictionaryService.saveData():
-                        print(f"{ResponseCode.PASS_LABEL} Đã lưu dữ liệu.")
+                        print(f"[{ResponseCode.SUCCESS}] Đã lưu dữ liệu.")
                     else:
-                        print(f"{ResponseCode.FAIL_LABEL} Lưu dữ liệu thất bại.")
+                        print(f"[{ResponseCode.ERROR}] Lưu dữ liệu thất bại.")
                 elif choice == 11:
                     self.handler.deleteWord()
                 elif choice == 0:
                     self.dictionaryService.saveData()
-                    print("Tạm biệt!")
+                    print(f"[{ResponseCode.INFO}] Tạm biệt!")
                     break
             except KeyboardInterrupt:
-                print(f"\n{ResponseCode.SKIP_LABEL} Đã dừng bởi người dùng.")
+                print(f"\n[{ResponseCode.CANCELLED}] Đã dừng bởi người dùng.")
                 break
             except Exception as e:
-                print(f"{ResponseCode.FAIL_LABEL} Lỗi xử lý menu: {e}")
+                print(f"[{ResponseCode.ERROR}] Lỗi xử lý menu: {e}")

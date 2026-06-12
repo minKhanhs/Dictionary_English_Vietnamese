@@ -1,4 +1,5 @@
 from config.AppConfig import AppConfig
+from config.ResponseCode import ResponseCode
 from utils.StringUtils import StringUtils
 
 
@@ -21,7 +22,7 @@ class HistoryList:
 
     def display(self):
         if not self.items:
-            print("Lịch sử trống.")
+            print(f"[{ResponseCode.EMPTY}] Lịch sử trống.")
             return
         for index, item in enumerate(self.items, start=1):
             print(f"{index}. {item}")

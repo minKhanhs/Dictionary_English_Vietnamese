@@ -12,6 +12,16 @@ class ResponseCode:
     FAIL_LABEL = f"[{FAIL}]"
     SKIP_LABEL = f"[{SKIP}]"
 
+    # Mã Lỗi / Trạng Thái Ứng Dụng (Application Codes)
+    SUCCESS = "S"          # Thành công
+    INFO = "INFO"          # Thông tin chung
+    INPUT_INVALID = "IV"   # Lỗi dữ liệu đầu vào
+    NOT_FOUND = "NF"       # Không tìm thấy dữ liệu
+    DUPLICATE = "DUP"      # Dữ liệu bị trùng lặp
+    FILE_ERROR = "IO"      # Lỗi đọc/ghi file
+    EMPTY = "EMPTY"        # Dữ liệu trống
+    CANCELLED = "CANCEL"   # Người dùng hủy thao tác
+    ERROR = "ERR"          # Lỗi chung chung hoặc không xác định
 
 TEST_RESPONSES = {
     "test_word.py": {
