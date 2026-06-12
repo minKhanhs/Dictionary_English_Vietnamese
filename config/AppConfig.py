@@ -11,8 +11,8 @@ class AppConfig:
     MAX_HISTORY_SIZE = 20
     MAX_SUGGESTIONS = 5
 
-    # Cấu hình cho Trie (Hỗ trợ từ a-z, khoảng trắng và dấu gạch ngang)
-    ALPHABET_SIZE = 28
+    # Cấu hình cho Trie: chỉ xử lý chữ cái tiếng Anh a-z.
+    ALPHABET_SIZE = 26
     FIRST_CHAR = "a"
     LAST_CHAR = "z"
 
