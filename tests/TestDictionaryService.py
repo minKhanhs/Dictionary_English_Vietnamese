@@ -1,14 +1,14 @@
-import unittest
-import sys
 import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
+import sys
+import unittest
 
 from config.AppConfig import AppConfig
 from models.Word import Word
 from services.DictionaryService import DictionaryService
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
 
 
 class TestDictionaryService(unittest.TestCase):
@@ -41,7 +41,9 @@ class TestDictionaryService(unittest.TestCase):
         self.assertFalse(self.service.addWordObject(Word("", "Nghĩa", "Ví dụ", [])))
 
     def testAddWordInvalidEnglish(self):
-        self.assertFalse(self.service.addWordObject(Word("hello123", "Nghĩa", "Ví dụ", [])))
+        self.assertFalse(
+            self.service.addWordObject(Word("hello123", "Nghĩa", "Ví dụ", []))
+        )
 
     def testAddWordNone(self):
         self.assertFalse(self.service.addWordObject(None))
