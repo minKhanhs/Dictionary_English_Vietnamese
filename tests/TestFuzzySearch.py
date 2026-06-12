@@ -1,19 +1,21 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
+from algorithms.FuzzySearch import FuzzySearch
+from algorithms.Levenshtein import Levenshtein
 from config.AppConfig import AppConfig
 from structures.Trie import TrieNode
-from algorithms.Levenshtein import Levenshtein
-from algorithms.FuzzySearch import FuzzySearch
+
 
 class TestLevenshtein(unittest.TestCase):
     """
     Test Suite 1: Kiểm tra tính toán cốt lõi của thuật toán Levenshtein
     """
+
     def setUp(self):
         # Thiết lập trước mỗi test case
         self.targetWord = "cat"
@@ -26,9 +28,9 @@ class TestLevenshtein(unittest.TestCase):
 
     def testCalculateNextRowMatch(self):
         # Khi ký tự khớp hoàn toàn (chữ 'c' đầu tiên)
-        initialRow = self.lev.getInitialRow() # [0, 1, 2, 3]
-        nextRow = self.lev.calculateNextRow(initialRow, 'c')
-        
+        initialRow = self.lev.getInitialRow()  # [0, 1, 2, 3]
+        nextRow = self.lev.calculateNextRow(initialRow, "c")
+
         # Chi phí ở vị trí tương ứng (index 1) phải là 0 vì 'c' == 'c'
         self.assertEqual(nextRow[1], 0)
         # Kết quả mong đợi của cả hàng khi xét chữ 'c' với "cat"
@@ -37,8 +39,8 @@ class TestLevenshtein(unittest.TestCase):
     def testCalculateNextRowMismatch(self):
         # Khi ký tự không khớp (chữ 'b')
         initialRow = self.lev.getInitialRow()
-        nextRow = self.lev.calculateNextRow(initialRow, 'b')
-        
+        nextRow = self.lev.calculateNextRow(initialRow, "b")
+
         # Vì khác biệt hoàn toàn, chi phí phải tăng lên
         self.assertEqual(nextRow, [1, 1, 2, 3])
 
@@ -47,12 +49,20 @@ class TestFuzzySearch(unittest.TestCase):
     """
     Test Suite 2: Kiểm tra logic tìm kiếm gần đúng trên cây Trie
     """
+
     def setUp(self):
         # 1. Khởi tạo cây Trie giả lập
         self.trieRoot = TrieNode()
         self.dictionaryWords = [
-            "hello", "hell", "helicopter", "hero", 
-            "help", "healer", "halo", "cat", "car"
+            "hello",
+            "hell",
+            "helicopter",
+            "hero",
+            "help",
+            "healer",
+            "halo",
+            "cat",
+            "car",
         ]
         for word in self.dictionaryWords:
             self.trieRoot.insert(word)
@@ -65,7 +75,7 @@ class TestFuzzySearch(unittest.TestCase):
         # SHORT_WORD_LENGTH = 4, SHORT_WORD_DISTANCE = 1
         self.assertEqual(self.matcher.getMaxDistance(3), AppConfig.SHORT_WORD_DISTANCE)
         self.assertEqual(self.matcher.getMaxDistance(4), AppConfig.SHORT_WORD_DISTANCE)
-        
+
         # MEDIUM_WORD_LENGTH = 8, MEDIUM_WORD_DISTANCE = 2
         self.assertEqual(self.matcher.getMaxDistance(6), AppConfig.MEDIUM_WORD_DISTANCE)
 
@@ -97,6 +107,7 @@ class TestFuzzySearch(unittest.TestCase):
     def testEmptyString(self):
         # Chuỗi rỗng phải trả về danh sách rỗng, không được lỗi crash (Exception)
         self.assertEqual(self.matcher.getSuggestions(""), [])
+
 
 if __name__ == "__main__":
     unittest.main()
