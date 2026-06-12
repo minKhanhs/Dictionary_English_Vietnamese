@@ -1,10 +1,10 @@
 from algorithms.FuzzySearch import FuzzySearch
 from models.FavoriteList import FavoriteList
 from models.HistoryList import HistoryList
-from models.Word import Word
 from services.FileService import FileService
 from structures.ArrayList import ArrayList
-from structures.Trie import TrieNode
+from structures.Trie import Trie
+from structures.Word import Word
 from utils.StringUtils import StringUtils
 from validate.Validation import Validation
 
@@ -13,7 +13,7 @@ class DictionaryService:
     """CRUD từ điển, tìm kiếm, lịch sử, yêu thích."""
 
     def __init__(self, fileService=None):
-        self.trieRoot = TrieNode()
+        self.trie = Trie()
         self.fuzzySearch = None
         self.words = ArrayList()
         self.history = HistoryList()
@@ -22,7 +22,7 @@ class DictionaryService:
 
     def loadData(self):
         """Tải dữ liệu từ file vào bộ nhớ."""
-        self.trieRoot = TrieNode()
+        self.trie = Trie()
         self.words = ArrayList()
         self.history.clear()
         self.favorites.clear()
@@ -32,7 +32,7 @@ class DictionaryService:
             self.history.add(item)
         for item in self.fileService.loadFavorites():
             self.favorites.add(item)
-        self.fuzzySearch = FuzzySearch(self.trieRoot)
+        self.fuzzySearch = FuzzySearch(self.trie.root)
 
     def saveData(self):
         wordList = self.getAllWords()
@@ -56,7 +56,7 @@ class DictionaryService:
         if self.wordExists(word.getEnglish()):
             return False
         self.words.add(word)
-        self.trieRoot.insert(word.getEnglish())
+        self.trie.insert(word.getEnglish())
         return True
 
     def importWordObject(self, word):
@@ -73,7 +73,7 @@ class DictionaryService:
         existing = self._findWord(word.getEnglish())
         if existing is None:
             self.words.add(word)
-            self.trieRoot.insert(word.getEnglish())
+            self.trie.insert(word.getEnglish())
             return True
         existing.mergeFrom(word)
         return True
@@ -84,14 +84,14 @@ class DictionaryService:
         normalized = StringUtils.normalizeWord(word) if word else ""
         if not normalized:
             return False
-        return self.trieRoot.search(normalized)
+        return self.trie.search(normalized)
 
     def searchExact(self, word):
         """Tìm chính xác. Tìm thấy → thêm vào history."""
         normalized = StringUtils.normalizeWord(word) if word else ""
         if not normalized:
             return None
-        if not self.trieRoot.search(normalized):
+        if not self.trie.search(normalized):
             return None
         found = self._findWord(normalized)
         if found is not None:
@@ -104,7 +104,7 @@ class DictionaryService:
         if not normalized:
             return []
         if not self.fuzzySearch:
-            self.fuzzySearch = FuzzySearch(self.trieRoot)
+            self.fuzzySearch = FuzzySearch(self.trie.root)
         matchedWords = []
         for suggestion in self.fuzzySearch.getSuggestions(normalized):
             found = self._findWord(suggestion)
@@ -166,10 +166,10 @@ class DictionaryService:
         return None
 
     def _rebuildTrie(self):
-        self.trieRoot = TrieNode()
+        self.trie = Trie()
         for i in range(self.words.getSize()):
             w = self.words.get(i)
             if w is None:
                 continue
-            self.trieRoot.insert(w.getEnglish())
-        self.fuzzySearch = FuzzySearch(self.trieRoot)
+            self.trie.insert(w.getEnglish())
+        self.fuzzySearch = FuzzySearch(self.trie.root)

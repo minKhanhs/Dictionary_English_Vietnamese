@@ -1,6 +1,6 @@
 from config.AppConfig import AppConfig
 from config.ResponseCode import ResponseCode
-from models.Word import Word
+from structures.Word import Word
 
 
 class MenuHandler:

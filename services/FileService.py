@@ -2,7 +2,7 @@ import os
 
 from config.AppConfig import AppConfig
 from config.ResponseCode import ResponseCode
-from models.Word import Word
+from structures.Word import Word
 from utils.StringUtils import StringUtils
 
 
