@@ -225,12 +225,3 @@ Hiện `normalizeWord()` giả định input là string. Các caller chính thư
 
 - Test labels: `PASS`, `FAIL`, `SKIP`.
 - App codes: `SUCCESS`, `INFO`, `INPUT_INVALID`, `NOT_FOUND`, `DUPLICATE`, `FILE_ERROR`, `EMPTY`, `CANCELLED`, `ERROR`.
-
-## Known Gaps Kỹ Thuật
-
-| Gap | File liên quan |
-| --- | --- |
-| `models.Word` và `structures.Word` trùng trách nhiệm | `models/Word.py`, `structures/Word.py` |
-| Validation cho phép ký tự Trie không nhận | `validate/Validation.py`, `structures/Trie.py`, `services/DictionaryService.py` |
-| `DictionaryService` import `Word` nhưng không dùng trực tiếp | `services/DictionaryService.py` |
-| Ruff fail line length/import/type annotation | `models/Word.py`, `structures/Word.py`, `ui/`, `utils/StringUtils.py`, `services/DictionaryService.py` |
