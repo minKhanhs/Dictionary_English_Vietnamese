@@ -48,6 +48,13 @@ class Trie:
             return None
         return node.wordData
 
+    def delete(self, word):
+        if not word or not self._isValidWord(word):
+            return False
+
+        deleted, _ = self._deleteRecursive(self.root, word, 0)
+        return deleted
+
     def startsWith(self, prefix):
         if prefix is None or not self._isValidWord(prefix):
             return False
@@ -72,3 +79,25 @@ class Trie:
 
     def _isValidWord(self, word):
         return isinstance(word, str) and all(self._isValidChar(char) for char in word)
+
+    def _deleteRecursive(self, node, word, depth):
+        if depth == len(word):
+            if not node.isEndOfWord:
+                return False, False
+            node.isEndOfWord = False
+            node.wordData = None
+            return True, len(node.children) == 0
+
+        char = word[depth]
+        child = node.children.get(char)
+        if child is None:
+            return False, False
+
+        deleted, shouldPruneChild = self._deleteRecursive(child, word, depth + 1)
+        if shouldPruneChild:
+            del node.children[char]
+
+        shouldPruneCurrent = (
+            deleted and not node.isEndOfWord and len(node.children) == 0
+        )
+        return deleted, shouldPruneCurrent

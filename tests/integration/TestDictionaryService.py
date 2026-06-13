@@ -185,6 +185,26 @@ class TestDictionaryService(unittest.TestCase):
         self.assertTrue(self.service.wordExists("hello"))
         self.assertTrue(self.service.wordExists("dog"))
 
+    def testDeletePrefixWordPreservesLongerWordInService(self):
+        self.assertTrue(self.service.addWordObject(Word("hell", "Địa ngục", "", [])))
+        self.assertTrue(self.service.deleteWord("hell"))
+        self.assertFalse(self.service.wordExists("hell"))
+        self.assertTrue(self.service.wordExists("hello"))
+
+    def testDeleteLongerWordPreservesPrefixWordInService(self):
+        self.assertTrue(self.service.addWordObject(Word("hell", "Địa ngục", "", [])))
+        self.assertTrue(self.service.deleteWord("hello"))
+        self.assertFalse(self.service.wordExists("hello"))
+        self.assertTrue(self.service.wordExists("hell"))
+
+    def testDeleteRefreshesFuzzySearchCache(self):
+        beforeDelete = self.service.searchApproximate("helo")
+        self.assertIn("hello", [w.getEnglish() for w in beforeDelete])
+
+        self.assertTrue(self.service.deleteWord("hello"))
+        afterDelete = self.service.searchApproximate("helo")
+        self.assertNotIn("hello", [w.getEnglish() for w in afterDelete])
+
     # --- HISTORY / FAVORITES ---
 
     def testHistoryTracksSearches(self):

@@ -44,7 +44,9 @@ class Word:
         normalized = self._normalizeMeaning(meaning)
         if not normalized:
             return False
-        existing_meanings = (self._normalizeMeaning(item) for item in self.getMeaningList())
+        existing_meanings = (
+            self._normalizeMeaning(item) for item in self.getMeaningList()
+        )
         return normalized in existing_meanings
 
     def addMeaning(self, meaning):

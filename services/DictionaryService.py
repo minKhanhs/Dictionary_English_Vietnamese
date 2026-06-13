@@ -4,7 +4,6 @@ from models.HistoryList import HistoryList
 from services.FileService import FileService
 from structures.ArrayList import ArrayList
 from structures.Trie import Trie
-from structures.Word import Word
 from utils.StringUtils import StringUtils
 from validate.Validation import Validation
 
@@ -118,22 +117,24 @@ class DictionaryService:
     # --- DELETE ---
 
     def deleteWord(self, english):
-        """Xóa từ. Rebuild Trie vì TrieNode không hỗ trợ delete."""
+        """Xóa từ khỏi ArrayList, Trie và Favorites nếu có."""
         normalized = StringUtils.normalizeWord(english) if english else ""
         if not normalized:
             return False
-        found = False
+        foundIndex = -1
         for i in range(self.words.getSize()):
             w = self.words.get(i)
             if w is None:
                 continue
             if w.getEnglish() == normalized:
-                self.words.remove(i)
-                found = True
+                foundIndex = i
                 break
-        if not found:
+        if foundIndex == -1:
             return False
-        self._rebuildTrie()
+        if not self.trie.delete(normalized):
+            return False
+        self.words.remove(foundIndex)
+        self.fuzzySearch = FuzzySearch(self.trie.root)
         if self.favorites.contains(normalized):
             self.favorites.remove(normalized)
         return True
@@ -159,12 +160,3 @@ class DictionaryService:
         if not normalized:
             return None
         return self.trie.searchData(normalized)
-
-    def _rebuildTrie(self):
-        self.trie = Trie()
-        for i in range(self.words.getSize()):
-            w = self.words.get(i)
-            if w is None:
-                continue
-            self.trie.insert(w.getEnglish(), w)
-        self.fuzzySearch = FuzzySearch(self.trie.root)

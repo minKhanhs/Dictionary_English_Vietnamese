@@ -293,11 +293,11 @@ Logic chính:
 
 ### 3.11. Xóa từ khỏi từ điển
 
-Xóa từ khỏi `ArrayList`, sau đó rebuild lại Trie vì `TrieNode` hiện chưa có hàm delete.
+Xóa từ khỏi Trie bằng `Trie.delete()`, sau đó xóa khỏi `ArrayList`, rebuild cache `FuzzySearch` và xóa khỏi Favorites nếu có.
 
 ```mermaid
 flowchart TD
-    A["Chọn 11 - Xóa từ điển"] --> B["Nhập từ tiếng Anh cần xóa"]
+    A["Chọn 11 - Xóa từ khỏi từ điển"] --> B["Nhập từ tiếng Anh cần xóa"]
     B --> C["DictionaryService.wordExists(english)"]
     C --> D{"Từ tồn tại?"}
     D -->|"Không"| E["Thông báo không tìm thấy"]
@@ -307,12 +307,13 @@ flowchart TD
     H -->|"Không"| I["Hủy xóa"]
     H -->|"Có"| J["DictionaryService.deleteWord(english)"]
     J --> K["Tìm word trong ArrayList"]
-    K --> L{"Tìm thấy?"}
+    K --> L{"Tìm thấy trong ArrayList?"}
     L -->|"Không"| M["Trả False"]
-    L -->|"Có"| N["ArrayList.remove(index)"]
-    N --> O["_rebuildTrie()"]
-    O --> P["Insert lại toàn bộ Word còn lại vào Trie"]
-    P --> Q["Rebuild FuzzySearch"]
+    L -->|"Có"| N["Trie.delete(normalized)"]
+    N --> O{"Xóa trong Trie thành công?"}
+    O -->|"Không"| M
+    O -->|"Có"| P["ArrayList.remove(index)"]
+    P --> Q["Rebuild FuzzySearch từ Trie root hiện tại"]
     Q --> R{"Word có trong Favorites?"}
     R -->|"Có"| S["Xóa khỏi Favorites"]
     R -->|"Không"| T["Bỏ qua Favorites"]
@@ -324,9 +325,10 @@ flowchart TD
 
 Logic chính:
 
-- Từ bị xóa khỏi bộ nhớ trước.
-- Trie được tạo mới và insert lại các từ còn lại.
-- `FuzzySearch` được tạo lại từ Trie mới.
+- `Trie.delete()` bỏ `isEndOfWord`, xóa `wordData` và prune các node không còn dùng.
+- Các node còn phục vụ từ khác có chung prefix được giữ lại.
+- Từ chỉ bị xóa khỏi `ArrayList` sau khi xóa trong Trie thành công.
+- `FuzzySearch` được tạo lại từ Trie root hiện tại.
 - Nếu từ bị xóa đang nằm trong Favorites, hệ thống xóa luôn khỏi Favorites.
 
 ### 3.12. Thoát chương trình
@@ -430,6 +432,7 @@ Trie hỗ trợ:
 - `insert()`: thêm từ và gắn `Word` object vào node cuối.
 - `search()`: kiểm tra từ tồn tại.
 - `searchData()`: lấy `Word` object tại node cuối.
+- `delete()`: xóa từ khỏi Trie, xóa `wordData` và prune node dư thừa mà không ảnh hưởng từ chung prefix.
 - `startsWith()`: kiểm tra prefix.
 
 ### ArrayList
@@ -521,11 +524,11 @@ flowchart TD
 | Thêm synonym | Tìm `Word`, validate synonym, chống trùng, giới hạn số lượng |
 | Favorites | Chỉ thêm từ đã tồn tại, chống trùng, hỗ trợ xóa và hiển thị |
 | History | Ghi khi tra cứu chính xác thành công, giới hạn số lượng, xóa bản ghi cũ nhất khi đầy |
-| Xóa từ | Xóa khỏi `ArrayList`, rebuild Trie, rebuild fuzzy search, xóa khỏi Favorites nếu có |
+| Xóa từ | Xóa bằng `Trie.delete()`, xóa khỏi `ArrayList`, rebuild fuzzy search, xóa khỏi Favorites nếu có |
 | Lưu dữ liệu | Ghi dictionary/history/favorites ra file text |
 
 ## 10. Ghi chú kỹ thuật
 
 - Runtime chính đang dùng `structures.Word.Word` trong `DictionaryService`, `FileService` và `MenuHandler`.
 - Trie chỉ nhận ký tự `a-z`, trong khi validation tiếng Anh hiện cho phép thêm khoảng trắng và dấu gạch ngang. Nếu nhập từ có ký tự Trie không nhận, cần cân nhắc đồng bộ rule validation với rule của Trie.
-- `FuzzySearch` được tạo lại khi load dữ liệu và sau khi xóa từ. Khi thêm từ mới, từ đó đã được insert vào Trie nhưng cache `FuzzySearch` cũ có thể chưa được rebuild ngay nếu đã từng khởi tạo trước đó.
+- `FuzzySearch` được tạo lại khi load dữ liệu và sau khi xóa từ bằng `Trie.delete()`. Khi thêm từ mới, từ đó đã được insert vào Trie nhưng cache `FuzzySearch` cũ có thể chưa được rebuild ngay nếu đã từng khởi tạo trước đó.

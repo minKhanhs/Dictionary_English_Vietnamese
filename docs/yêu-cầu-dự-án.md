@@ -80,10 +80,10 @@ book|quyển sách; đặt chỗ|Book a room.|volume,textbook
 | Lưu lịch sử | Có, chỉ ghi khi tra cứu chính xác thành công |
 | Favorites | Có thêm/xóa/hiển thị; UI kiểm tra từ tồn tại trước khi thêm |
 | Hiển thị toàn bộ từ | Có |
-| Xóa từ | Có, menu option 11 gọi `DictionaryService.deleteWord()` |
+| Xóa từ | Có, menu option 11 gọi `DictionaryService.deleteWord()` và xóa trực tiếp trong Trie bằng `Trie.delete()` |
 | Lưu dữ liệu | Có, save dictionary/history/favorites |
 | Load dữ liệu | Có, merge các dòng dictionary trùng english |
-| Test | Có 147 test bằng `unittest` |
+| Test | Có 156 test bằng `unittest` |
 
 ## Luồng Console
 

@@ -1,8 +1,9 @@
-from typing import List, Any
+from typing import Any
+
 
 class StringUtils:
     @staticmethod
-    def join(items: List[Any], separator: str) -> str:
+    def join(items: list[Any], separator: str) -> str:
         if not items:
             return ""
         return separator.join(str(item) for item in items)
@@ -17,7 +18,7 @@ class StringUtils:
         return " ".join(text.split())
 
     @staticmethod
-    def splitAndClean(text: str, separator: str) -> List[str]:
+    def splitAndClean(text: str, separator: str) -> list[str]:
         if not text:
             return []
         return [

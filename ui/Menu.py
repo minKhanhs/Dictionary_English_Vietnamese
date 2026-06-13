@@ -23,7 +23,7 @@ class Menu:
         print("8.  Hiển thị Favorites")
         print("9.  Hiển thị tất cả từ")
         print("10. Lưu dữ liệu")
-        print("11. Xóa từ điển")
+        print("11. Xóa từ khỏi từ điển")
         print("0.  Thoát")
 
     def inputChoice(self):
@@ -31,7 +31,10 @@ class Menu:
             choice = input("Chọn chức năng: ")
             if Validation.isValidMenuOption(choice):
                 return int(choice)
-            print(f"[{ResponseCode.INPUT_INVALID}] Lựa chọn không hợp lệ. Vui lòng nhập số từ 0 đến 11.")
+            print(
+                f"[{ResponseCode.INPUT_INVALID}] Lựa chọn không hợp lệ. "
+                "Vui lòng nhập số từ 0 đến 11."
+            )
 
     def run(self):
         try:
@@ -76,7 +79,10 @@ class Menu:
                 print(f"\n[{ResponseCode.CANCELLED}] Đã dừng bởi người dùng.")
                 break
             except EOFError:
-                print(f"\n[{ResponseCode.CANCELLED}] Ngắt luồng nhập dữ liệu (EOF). Thoát chương trình.")
+                print(
+                    f"\n[{ResponseCode.CANCELLED}] Ngắt luồng nhập dữ liệu (EOF). "
+                    "Thoát chương trình."
+                )
                 break
             except Exception as e:
                 print(f"[{ResponseCode.ERROR}] Lỗi xử lý menu: {e}")
