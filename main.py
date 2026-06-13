@@ -29,7 +29,7 @@ def runTests():
 def main():
     print("===== TỪ ĐIỂN ANH - VIỆT =====")
     print("1. Chạy ứng dụng")
-    print("2. Chạy unit test")
+        print("2. Chạy test suite")
     try:
         choice = input("Chọn: ")
         if choice == "2":

@@ -124,15 +124,6 @@ Nếu chọn `2`, app chạy test suite bằng `unittest`. Các lựa chọn kh�
 - Menu option: số nguyên từ `0` đến `11`.
 - Dictionary line: phải có ít nhất 4 field, english hợp lệ và nghĩa không rỗng.
 
-## Known Gaps Cần Quyết Định
-
-| Gap | Tác động | Hướng xử lý có thể chọn |
-| --- | --- | --- |
-| `Validation.isEnglishWord()` cho phép dấu cách và `-`, nhưng `Trie` chỉ nhận `a-z` | Một từ có thể được thêm vào `ArrayList` nhưng không searchable bằng Trie | Siết validation về `a-z`, hoặc mở rộng Trie để hỗ trợ ký tự này |
-| Có hai class `Word` ở `models/Word.py` và `structures/Word.py` | Dễ lệch behavior; service dùng `structures.Word`, tests dùng `models.Word` | Hợp nhất một implementation, hoặc ghi rõ ownership |
-| Docs cũ nhắc `data/`, code dùng file root | Nếu muốn cấu trúc sạch hơn cần đổi `AppConfig` và migration dữ liệu | Giữ root như hiện tại, hoặc chuyển sang `data/` |
-| Ruff đang fail 14 lỗi style/import | Tests vẫn pass nhưng quality gate lint chưa sạch | Sửa code style hoặc không coi Ruff là bắt buộc |
-
 ## Cách Chạy
 
 ```bash
