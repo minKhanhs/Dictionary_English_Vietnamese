@@ -19,12 +19,17 @@ class MenuHandler:
         )
         synonyms = []
         if synonymsInput and synonymsInput.strip():
-            synonyms = StringUtils.splitAndClean(synonymsInput, AppConfig.LIST_SEPARATOR)
+            synonyms = StringUtils.splitAndClean(
+                synonymsInput, AppConfig.LIST_SEPARATOR
+            )
         word = Word(english, vietnamese, example, synonyms)
         if self.dictionaryService.addWordObject(word):
             print(f"[{ResponseCode.SUCCESS}] Đã thêm từ thành công.")
         else:
-            print(f"[{ResponseCode.ERROR}] Không thể thêm từ. Kiểm tra lại dữ liệu hoặc từ đã tồn tại.")
+            print(
+                f"[{ResponseCode.ERROR}] Không thể thêm từ. "
+                "Kiểm tra lại dữ liệu hoặc từ đã tồn tại."
+            )
 
     def addSynonym(self):
         english = input("Từ tiếng Anh: ")
@@ -36,7 +41,10 @@ class MenuHandler:
         if word.addSynonym(synonym):
             print(f"[{ResponseCode.SUCCESS}] Đã thêm từ đồng nghĩa.")
         else:
-            print(f"[{ResponseCode.ERROR}] Không thể thêm từ đồng nghĩa (trùng hoặc không hợp lệ).")
+            print(
+                f"[{ResponseCode.ERROR}] Không thể thêm từ đồng nghĩa "
+                "(trùng hoặc không hợp lệ)."
+            )
 
     def searchExact(self):
         english = input("Từ tiếng Anh: ")
@@ -66,7 +74,10 @@ class MenuHandler:
     def addFavorite(self):
         english = input("Từ tiếng Anh: ")
         if not self.dictionaryService.wordExists(english):
-            print(f"[{ResponseCode.NOT_FOUND}] Từ phải tồn tại trong từ điển trước khi thêm vào yêu thích.")
+            print(
+                f"[{ResponseCode.NOT_FOUND}] Từ phải tồn tại trong từ điển "
+                "trước khi thêm vào yêu thích."
+            )
             return
         if self.dictionaryService.getFavorites().add(english):
             print(f"[{ResponseCode.SUCCESS}] Đã thêm vào yêu thích.")
@@ -78,7 +89,10 @@ class MenuHandler:
         if self.dictionaryService.getFavorites().remove(english):
             print(f"[{ResponseCode.SUCCESS}] Đã xóa khỏi yêu thích.")
         else:
-            print(f"[{ResponseCode.NOT_FOUND}] Không tìm thấy từ trong danh sách yêu thích.")
+            print(
+                f"[{ResponseCode.NOT_FOUND}] Không tìm thấy từ trong "
+                "danh sách yêu thích."
+            )
 
     def showFavorites(self):
         self.dictionaryService.getFavorites().display()

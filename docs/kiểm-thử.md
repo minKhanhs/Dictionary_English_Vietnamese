@@ -87,18 +87,22 @@ Unit test kiểm tra từng lớp hoặc nhóm hàm độc lập. Các test này
 | UT04 | Trie | Tìm từ đã insert | Insert và search `hello` | Trả về `True` |
 | UT05 | Trie | Tìm từ chưa insert | Search `world` | Trả về `False` |
 | UT06 | Trie | Kiểm tra prefix | Prefix `hel` | Trả về `True` |
-| UT07 | Word | Chuẩn hóa english | `Hello` | Lưu thành `hello` |
-| UT08 | Word | Thêm nghĩa mới | `book` thêm `đặt chỗ` | Nghĩa mới được nối vào danh sách nghĩa |
-| UT09 | Word | Chống trùng synonym | Thêm lại `hi` | Không thêm trùng |
-| UT10 | Validation | Từ tiếng Anh hợp lệ | `hello` | Trả về `True` |
-| UT11 | Validation | Từ tiếng Anh không hợp lệ | `hello123` | Trả về `False` |
-| UT12 | Validation | Lựa chọn menu hợp lệ | `0`, `5`, `11` | Trả về `True` |
-| UT13 | HistoryList | Chuẩn hóa lịch sử | `HELLO` | Lưu thành `hello` |
-| UT14 | HistoryList | Giới hạn lịch sử | Thêm vượt `MAX_HISTORY_SIZE` | Xóa phần tử cũ nhất |
-| UT15 | FavoriteList | Thêm favorite | `hello` | Danh sách có `hello` |
-| UT16 | FavoriteList | Chống trùng favorite | Thêm `hello` hai lần | Lần hai bị từ chối |
-| UT17 | Levenshtein | Tính hàng khoảng cách | Target `cat`, ký tự `c` | Row tiếp theo đúng |
-| UT18 | FuzzySearch | Gợi ý từ gần đúng | `helo` | Gợi ý có `hello` |
+| UT07 | Trie | Xóa từ lá | Xóa `hero` | `hero` không còn tìm thấy, các từ khác vẫn còn |
+| UT08 | Trie | Xóa từ là prefix | Xóa `hell` khi có `hello` | `hell` bị xóa, `hello` vẫn còn |
+| UT09 | Trie | Xóa từ có chung prefix | Xóa `cat` khi có `car` | `cat` bị xóa, `car` vẫn còn |
+| UT10 | Trie | Xóa từ invalid/không tồn tại | Xóa `hello-world`, `world`, chuỗi rỗng | Trả về `False`, dữ liệu cũ giữ nguyên |
+| UT11 | Word | Chuẩn hóa english | `Hello` | Lưu thành `hello` |
+| UT12 | Word | Thêm nghĩa mới | `book` thêm `đặt chỗ` | Nghĩa mới được nối vào danh sách nghĩa |
+| UT13 | Word | Chống trùng synonym | Thêm lại `hi` | Không thêm trùng |
+| UT14 | Validation | Từ tiếng Anh hợp lệ | `hello` | Trả về `True` |
+| UT15 | Validation | Từ tiếng Anh không hợp lệ | `hello123` | Trả về `False` |
+| UT16 | Validation | Lựa chọn menu hợp lệ | `0`, `5`, `11` | Trả về `True` |
+| UT17 | HistoryList | Chuẩn hóa lịch sử | `HELLO` | Lưu thành `hello` |
+| UT18 | HistoryList | Giới hạn lịch sử | Thêm vượt `MAX_HISTORY_SIZE` | Xóa phần tử cũ nhất |
+| UT19 | FavoriteList | Thêm favorite | `hello` | Danh sách có `hello` |
+| UT20 | FavoriteList | Chống trùng favorite | Thêm `hello` hai lần | Lần hai bị từ chối |
+| UT21 | Levenshtein | Tính hàng khoảng cách | Target `cat`, ký tự `c` | Row tiếp theo đúng |
+| UT22 | FuzzySearch | Gợi ý từ gần đúng | `helo` | Gợi ý có `hello` |
 
 ### 4.4. Cách chạy unit test
 
@@ -137,6 +141,8 @@ Các luồng được kiểm thử trong `tests/integration/TestDictionaryServic
 - Xóa từ khỏi từ điển.
 - Xóa từ khỏi Favorites khi từ bị xóa khỏi từ điển.
 - Giữ nguyên các từ khác sau khi xóa một từ.
+- Giữ nguyên từ có chung prefix khi xóa từ ngắn/dài trong Trie.
+- Làm mới cache `FuzzySearch` để từ đã xóa không còn xuất hiện trong gợi ý.
 - Thêm, xóa và chống trùng Favorites.
 
 ### 5.3. Bảng kịch bản kiểm thử tích hợp
@@ -153,6 +159,8 @@ Các luồng được kiểm thử trong `tests/integration/TestDictionaryServic
 | IT08 | Tìm kiếm gần đúng | Gọi `searchApproximate("helo")` | Danh sách gợi ý có `hello` |
 | IT09 | Xóa từ | Gọi `deleteWord("hello")` | Từ bị xóa khỏi Trie và không còn tìm thấy |
 | IT10 | Favorites khi xóa từ | Thêm `cat` vào favorites rồi xóa `cat` | `cat` bị xóa khỏi favorites |
+| IT11 | Xóa từ chung prefix | Thêm `hell`, xóa `hell` hoặc `hello` | Từ bị xóa mất, từ chung prefix còn lại vẫn tìm được |
+| IT12 | Cache fuzzy sau xóa | Search approximate để tạo cache, xóa `hello`, search lại `helo` | Gợi ý không còn chứa `hello` |
 
 ### 5.4. Cách chạy integration test
 

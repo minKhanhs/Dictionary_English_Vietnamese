@@ -4,7 +4,7 @@ from structures.Trie import Trie
 
 
 class TestTrie(unittest.TestCase):
-    """Kiểm tra Trie insert, search, startsWith."""
+    """Kiểm tra Trie insert, search, startsWith, delete."""
 
     def setUp(self):
         self.trie = Trie()
@@ -58,6 +58,40 @@ class TestTrie(unittest.TestCase):
         data = {"meaning": "xin chào"}
         self.assertTrue(self.trie.insert("hi", data))
         self.assertEqual(self.trie.searchData("hi"), data)
+
+    def testDeleteLeafWord(self):
+        self.assertTrue(self.trie.delete("hero"))
+        self.assertFalse(self.trie.search("hero"))
+        self.assertIsNone(self.trie.searchData("hero"))
+        self.assertTrue(self.trie.search("hello"))
+
+    def testDeletePrefixWordPreservesLongerWord(self):
+        self.assertTrue(self.trie.delete("hell"))
+        self.assertFalse(self.trie.search("hell"))
+        self.assertTrue(self.trie.search("hello"))
+        self.assertTrue(self.trie.startsWith("hell"))
+
+    def testDeleteLongerWordPreservesPrefixWord(self):
+        self.assertTrue(self.trie.delete("hello"))
+        self.assertFalse(self.trie.search("hello"))
+        self.assertTrue(self.trie.search("hell"))
+
+    def testDeleteSharedPrefixPreservesSiblingBranch(self):
+        self.assertTrue(self.trie.delete("cat"))
+        self.assertFalse(self.trie.search("cat"))
+        self.assertTrue(self.trie.search("car"))
+
+    def testDeleteNotFoundAndInvalidWord(self):
+        self.assertFalse(self.trie.delete("world"))
+        self.assertFalse(self.trie.delete(""))
+        self.assertFalse(self.trie.delete("hello-world"))
+        self.assertTrue(self.trie.search("hello"))
+
+    def testDeleteClearsWordData(self):
+        data = {"meaning": "xin chào"}
+        self.assertTrue(self.trie.insert("hi", data))
+        self.assertTrue(self.trie.delete("hi"))
+        self.assertIsNone(self.trie.searchData("hi"))
 
     def testTrieIndexHelpers(self):
         self.assertEqual(self.trie._getIndex("a"), 0)

@@ -91,7 +91,7 @@ API hiện có:
 | `searchExact(word)` | Search Trie, trả `Word`, ghi history nếu tìm thấy |
 | `searchApproximate(word)` | Lấy suggestions từ `FuzzySearch`, trả danh sách `Word` |
 | `getWord(english)` | Lấy word không ghi history |
-| `deleteWord(english)` | Xóa khỏi `ArrayList`, rebuild Trie, xóa khỏi favorites nếu có |
+| `deleteWord(english)` | Xóa khỏi Trie bằng `Trie.delete()`, xóa khỏi `ArrayList`, rebuild cache fuzzy search, xóa khỏi favorites nếu có |
 | `getHistory()` | Trả `HistoryList` |
 | `getFavorites()` | Trả `FavoriteList` |
 | `getAllWords()` | Trả list từ `ArrayList` |
@@ -143,6 +143,7 @@ API:
 - `insert(word, word_data=None)`: chỉ nhận chuỗi hợp lệ theo `_isValidWord()`.
 - `search(english)`: trả bool.
 - `searchData(english)`: trả `wordData` nếu node là end-of-word.
+- `delete(word)`: bỏ dấu kết thúc từ, xóa `wordData` và prune các node không còn được dùng.
 - `startsWith(prefix)`: kiểm tra prefix.
 
 Trie hiện chỉ chấp nhận ký tự từ `AppConfig.FIRST_CHAR` đến `AppConfig.LAST_CHAR`, tức `a-z`.
